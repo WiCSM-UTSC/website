@@ -1,7 +1,7 @@
 "use client";
 
 import { userState } from "react";
-import Imagve from "next/image";
+import Image from "next/image";
 
 export default function FlipCard({ 
     name = "Name", 

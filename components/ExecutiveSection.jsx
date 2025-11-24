@@ -5,7 +5,7 @@ const execTeam = [
         name: "Jane Doe",
         position: "President",
         description: "Jane leads the team with a passion for technology and community building.",
-        imageUrl: "sandbox:/mnt/data/IMG_1710.jpg",
+        imageUrl: "/IMG_1710.jpg",
     }
 ];
 

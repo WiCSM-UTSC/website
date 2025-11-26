@@ -106,3 +106,12 @@
  height: auto;
  object-fit: cover;
 }
+.event-card__title--link {
+  text-decoration: underline;
+  color: inherit;
+  cursor: pointer;
+}
+
+.event-card__title--link:hover {
+  opacity: 0.7;
+}

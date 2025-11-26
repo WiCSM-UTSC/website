@@ -1,0 +1,108 @@
+.event-card {
+ background-color: #f6f5f8;
+ padding: 24px 40px;
+ font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+   sans-serif;
+ color: #111;
+}
+
+
+/* Top header */
+.event-card__header {
+ display: flex;
+ align-items: center;
+ gap: 16px;
+ margin-bottom: 24px;
+ width: max-content;          /* <<< MAGIC: keeps header only as wide as month+line */
+}
+
+
+.event-card__divider {
+ width: 900px;                /* <<< short line length */
+ height: 1px;
+ background-color: #b3b3b3;
+}
+
+
+
+
+.event-card__month-label {
+ font-size: 10px;
+ letter-spacing: 0.15em;
+ text-transform: uppercase;
+ color: #555;
+}
+
+
+
+
+
+
+/* Main row */
+.event-card__body {
+ display: flex;
+ align-items: flex-start;
+ gap: 32px;
+}
+
+
+/* Date column */
+.event-card__date-col {
+ width: 45px;              
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 2px;
+ text-transform: uppercase;
+}
+
+
+
+
+.event-card__weekday {
+ font-size: 10px;
+ letter-spacing: 0.08em;
+ color: #555;
+}
+
+
+.event-card__day {
+ font-size: 16px;
+ font-weight: 500;
+}
+
+
+/* Text section */
+.event-card__content {
+ flex: 1;
+ max-width: 600px;
+}
+
+
+.event-card__meta {
+ font-size: 14px;
+ margin-bottom: 4px;
+}
+
+
+.event-card__title {
+ font-size: 14px;
+ font-weight: 700;
+ text-decoration: underline;
+ margin-bottom: 8px;
+}
+
+
+.event-card__description {
+ font-size: 14px;
+ line-height: 1.4;
+}
+
+
+/* Poster */
+.event-card__poster img {
+ display: block;
+ width: 260px;
+ height: auto;
+ object-fit: cover;
+}

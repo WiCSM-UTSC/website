@@ -5,7 +5,7 @@ const execTeamData = [
         title: "Presidents",
         members: [
             {
-                name: "Danielle Andrea Santos",
+                name: "Danielle Santos",
                 position: "Co-President",
                 description: "This person is super important for WiCSM. This person is super important for WiCSM.",
                 imageUrl: "/IMG_1710.jpg",
@@ -35,13 +35,13 @@ const execTeamData = [
             },
             {
                 name: "Maissara Said Bakar",
-                position: "Director of Campus Outreach",
+                position: "Director of Campus",
                 description: "This person is super important for WiCSM. This person is super important for WiCSM.",
                 imageUrl: "/IMG_1710.jpg",
             },
             {
                 name: "Conrad Mo",
-                position: "Director of Social Media",
+                position: "Director of Socials",
                 description: "This person is super important for WiCSM. This person is super important for WiCSM.",
                 imageUrl: "/IMG_1710.jpg",
             },
@@ -81,7 +81,7 @@ const execTeamData = [
             },
             {
                 name: "Shangavi Muhunthan",
-                position: "Muhunthan Event Coordinator",
+                position: "Event Coordinator",
                 description: "This person is super important for WiCSM. This person is super important for WiCSM.",
                 imageUrl: "/IMG_1710.jpg",
             },
@@ -104,19 +104,19 @@ const execTeamData = [
         members: [
             {
                 name: "Maanya Gupta",
-                position: "Corporations Associate",
+                position: "Associate",
                 description: "This person is super important for WiCSM. This person is super important for WiCSM.",
                 imageUrl: "/IMG_1710.jpg",
             },
             {
                 name: "Kehu Li",
-                position: "Corporations Associate",
+                position: "Associate",
                 description: "This person is super important for WiCSM. This person is super important for WiCSM.",
                 imageUrl: "/IMG_1710.jpg",
             },
             {
                 name: "Shubhra Rashmi",
-                position: "Corporations Associate",
+                position: "Associate",
                 description: "This person is super important for WiCSM. This person is super important for WiCSM.",
                 imageUrl: "/IMG_1710.jpg",
             }
@@ -133,7 +133,7 @@ const execTeamData = [
             },
             {
                 name: "Kayleigh Doopan",
-                position: "Mentorship Associate",
+                position: "Associate",
                 description: "This person is super important for WiCSM. This person is super important for WiCSM.",
                 imageUrl: "/IMG_1710.jpg",
             }
@@ -172,7 +172,7 @@ export default function ExecutiveSection() {
                     Executive Team
                 </h2>
 
-                <p className="max-w-2xl mx-auto text-2xl font-bold mb-20 [color:#513c97]">
+                <p className="max-w-2xl mx-auto text-4xl font-bold mb-20 [color:#513c97]">
                     Meet the amazing people at WiCSM!
                 </p>
 
@@ -188,13 +188,13 @@ export default function ExecutiveSection() {
 
                     return (
                         <div key={team.title} className="mb-20 flex flex-col items-center">
-                            <h3 className="text-5xl font-semibold mb-12 [color:#513c97]">
+                            <h3 className="text-5xl font-bold mb-12 [color:#513c97]">
                                 {team.title}
                             </h3>
 
                             {/* VPs/Co-Prez row */}
                             {vpMembers.length > 0 && (
-                                <div className="w-full flex flex-wrap justify-center gap-20 mb-28">
+                                <div className="w-full flex flex-wrap justify-center gap-20 mb-32">
                                     {vpMembers.map((member) => (
                                         <FlipCard
                                             key={member.name}
@@ -209,7 +209,7 @@ export default function ExecutiveSection() {
 
                             {/* Directors row */}
                             {directorMembers.length > 0 && (
-                                <div className="w-full flex flex-wrap justify-center gap-20 mb-28">
+                                <div className="w-full flex flex-wrap justify-center gap-20 mb-32">
                                     {directorMembers.map((member) => (
                                         <FlipCard
                                             key={member.name}

@@ -28,7 +28,7 @@ export default function FlipCard({
           }}
         >
             <div
-                className="w-83 [height:29rem] rounded-1xl"
+                className="w-83 [height:25rem] rounded-1xl"
                 style={{
                     perspective: "1000px",
                 }}
@@ -62,7 +62,7 @@ export default function FlipCard({
                                     </div>
                                 </div>
                             )}
-                            <div className="absolute bottom-4 left-4 text-left">
+                            <div className="absolute bottom-4 left-0 right-0 text-center">
                                 <p className="text-3xl font-black [filter:drop-shadow(0_0_3px_rgba(230,220,250,0.9))]">
                                     {name}
                                 </p>

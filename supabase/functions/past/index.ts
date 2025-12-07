@@ -9,7 +9,7 @@ function getTodayInToronto(): string {
     month: "2-digit",
     day: "2-digit",
   });
-  return formatter.format(now);
+  return formatter.format(now); 
 }
 
 Deno.serve(async (req) => {
@@ -18,14 +18,20 @@ Deno.serve(async (req) => {
   }
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
 
-  if (!supabaseUrl || !supabaseKey) {
-    console.error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error("Missing SUPABASE_URL or SUPABASE_ANON_KEY");
     return new Response("Server misconfigured", { status: 500 });
   }
 
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    global: {
+      headers: {
+        Authorization: req.headers.get("Authorization") ?? "",
+      },
+    },
+  });
 
   const today = getTodayInToronto();
   console.log("[get-past-events] today (Toronto):", today);

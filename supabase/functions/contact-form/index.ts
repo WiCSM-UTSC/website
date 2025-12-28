@@ -2,14 +2,20 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 Deno.serve(async (req) => {
   try { 
+    //all constants 
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const mailerSendKey = Deno.env.get("MAILERSEND_API_KEY");
+    
+    const fromEmail = Deno.env.get("MAILERSEND_FROM_EMAIL");
+    const receiverEmail = Deno.env.get("CONTACT_RECEIVER_EMAIL");
+    const emailTemplate = Deno.env.get("MAILERSEND_CONTACT_TEMPLATE_ID");
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
 
     //If keys are not found
-    if (!supabaseUrl || !serviceRoleKey) {
-      return new Response(JSON.stringify({
-        error: "Env vars missing"
+    if (!supabaseUrl || !serviceRoleKey || !mailerSendKey || !fromEmail || !receiverEmail || !emailTemplate) {
+      return new Response(JSON.stringify({ error: "Env vars missing"
       }), {
         status: 500,
         headers: { "Content-Type": "application/json"}
@@ -38,7 +44,7 @@ Deno.serve(async (req) => {
 
     const { name, email, message } = body;
 
-    //Missing fields [TODO: make more specfic messages]
+    //Missing fields
     if (!name || !email || !message) {
       return new Response(JSON.stringify({
         error: "Missing fields."
@@ -73,6 +79,47 @@ Deno.serve(async (req) => {
         }
       });
     }
+    
+    const mailRes = await fetch("https://api.mailersend.com/v1/email", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${mailerSendKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: {
+          email: fromEmail,
+          name: "WiCSM Contact Form",
+        },
+        to: [
+          {
+            email: receiverEmail,
+            name: "WiCSM Team",
+          },
+        ],
+        reply_to: {
+          email: email,
+          name: name,
+        },
+        subject: "New Contact Form Message",
+        template_id: emailTemplate,
+        variables: [
+          {
+            email: receiverEmail,
+            substitutions: {
+              name: { var: "name", value: name },
+              email: { var: "email", value: email },
+              message: { var: "message", value: message }
+            }
+          }
+        ]
+      }),
+    });
+
+    if (!mailRes.ok) {
+      const err = await mailRes.text();
+      return new Response(JSON.stringify({ error: "Email failed", details: err }), { status: 500 });
+    }
 
     //Success
     return new Response(
@@ -83,13 +130,10 @@ Deno.serve(async (req) => {
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
     } catch (err) {
-      return new Response(JSON.stringify({
-        error: err.message
+      return new Response(JSON.stringify({ error: err.message
       }), {
         status: 500,
-        headers: {
-          "Content-Type": "application/json"
-        }
+        headers: { "Content-Type": "application/json" }
       });
 
     }

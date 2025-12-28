@@ -13,9 +13,10 @@ export default function MainSection() {
         bg-gradient-to-br
         from-[#9B93E8]
         to-[#D8E9FF]
+        overflow-hidden
       "
     >
-      {/* LEFT SIDE */}
+      {/* CONTENT */}
       <div className="relative z-10">
         <h1 className="text-8xl font-bold text-[#3A1B6B] drop-shadow-lg">
           WiCSM
@@ -30,31 +31,25 @@ export default function MainSection() {
         </p>
       </div>
 
-      {/* RIGHT SIDE (placeholder for later) */}
-      {/*
-      <Image
-        src="/hero-placeholder.png"
-        alt="Hero graphic"
-        width={420}
-        height={420}
-        className="drop-shadow-2xl"
-      />
-      */}
-
-      {/* 🔥 BOTTOM FADE — THIS FIXES THE ABRUPT TRANSITION */}
-      <div
+      {/* BOTTOM GRADIENT FADE */}
+      <div 
         className="
           absolute
           bottom-0
           left-0
           w-full
-          h-80
-          bg-gradient-to-b
-          from-transparent
-          via-[#D8E9FF]
-          to-[#C7D8FF]
-        "
-      />
-    </section>
+          h-40
+          z-0
+          pointer-events-none
+          bg-[linear-gradient(
+          180deg,
+          #9B93E8_0%,
+          #B8C5FF_35%,
+          #D8E9FF_65%,
+          #EEF5FF_100%
+        )]
+      "
+/>
+</section>
   );
 }

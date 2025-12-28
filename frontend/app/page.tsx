@@ -9,10 +9,10 @@ export default function Home() {
   return (
     <>
       <MainSection />
-      <SectionDivider direction="down" />
       <WhoWeAreSection />
       <SectionDivider direction="up" />
       <OurValuesSection />
+      <SectionDivider direction="down" />
       <NextEventSection />
       <SupportMissionSection />
     </>

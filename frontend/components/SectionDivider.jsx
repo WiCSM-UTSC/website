@@ -1,11 +1,10 @@
 export default function SectionDivider({ direction = "down" }) {
-    const gradient =
-      direction === "down"
-        ? "bg-gradient-to-b from-[#9B93E8] via-[#D8E9FF] to-white"
-        : "bg-gradient-to-b from-white via-[#D8E9FF] to-[#9B93E8]";
-  
-    return (
-      <div className={`w-full h-[380px] ${gradient}`} />
-    );
-  }
-  
+  const gradientStyle =
+    direction === "down"
+      ? "linear-gradient(to bottom, #9B93E8, #A8A5F0, #B8C5FF, #D8E9FF, #FFFFFF)"
+      : "linear-gradient(to bottom, #FFFFFF, #D8E9FF, #B8C5FF, #A8A5F0, #9B93E8)";
+
+  return (
+    <div className="w-full h-[300px]" style={{ background: gradientStyle }} />
+  );
+}

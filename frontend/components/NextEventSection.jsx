@@ -5,21 +5,10 @@ export default function NextEventSection() {
     <section
       className="
         relative
-        pt-40 pb-48
+        pt-10 pb-48
         bg-white
       "
     >
-      {/* TOP FADE */}
-      <div
-        className="
-          absolute top-0 left-0 w-full h-48
-          bg-gradient-to-b
-          from-[#D8E9FF]
-          via-[#EEF2FF]
-          to-white
-        "
-      />
-
       <div className="relative max-w-7xl mx-auto px-24">
         {/* TITLE */}
         <h2 className="text-5xl font-bold text-[#3A1B6B] text-center mb-24">
@@ -27,27 +16,27 @@ export default function NextEventSection() {
         </h2>
 
         {/* CONTENT */}
-        <div className="grid grid-cols-2 items-center gap-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-24">
           {/* LEFT TEXT */}
           <p className="text-lg text-[#2D1B4E] max-w-md leading-relaxed">
-            Short description or hook regarding joining our next event.
-            Learn, connect, and grow with the WiCSM community.
+            Short description or hook regarding joining our next event. Learn,
+            connect, and grow with the WiCSM community.
           </p>
 
           {/* RIGHT CARD */}
           <div
             className="
-              w-[420px] h-[420px]
+              w-[280px] h-[280px]
+              md:w-[420px] md:h-[420px]
               rounded-3xl
               bg-white
               shadow-[0_0_40px_rgba(155,147,232,0.45)]
               flex items-center justify-center
+              mx-auto md:mx-0
             "
           >
             {/* Placeholder — swap later */}
-            <div className="text-gray-400">
-              Event Image
-            </div>
+            <div className="text-gray-400">Event Image</div>
 
             {/*
             <Image
@@ -61,6 +50,23 @@ export default function NextEventSection() {
           </div>
         </div>
       </div>
+
+      {/* overlay fade out at bottom */}
+      <div
+        className="
+            pointer-events-none
+            absolute
+            -bottom-px
+            left-0
+            w-full
+            h-[30vh]
+            z-20
+            bg-linear-to-b
+            from-transparent
+            via-white
+            to-[#ece7fa]
+  "
+      />
     </section>
   );
 }

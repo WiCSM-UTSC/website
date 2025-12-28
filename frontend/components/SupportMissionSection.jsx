@@ -2,20 +2,20 @@ import Image from "next/image";
 
 export default function SupportMissionSection() {
   return (
-    <section className="py-32 px-24 bg-[#FAF8FF]">
-      <div className="flex items-center justify-between gap-24">
+    <section className="py-32 px-24 bg-[#ece7fa]">
+      <div className="flex-col md:flex-row flex items-center justify-between gap-24">
 
         {/* LEFT: Image / placeholder */}
-        <div className="w-[360px] h-[360px] rounded-3xl 
-                        bg-white shadow-[0_0_40px_rgba(155,147,232,0.6)]" />
+        <div className="w-[250px] h-[250px] md:w-[360px] md:h-[360px] rounded-3xl 
+                        bg-white shadow-[0_0_40px_rgba(155,147,232,0.6)] shrink-0" />
 
         {/* RIGHT: Text + CTA */}
         <div className="max-w-xl">
-          <h2 className="text-5xl font-bold text-[#3A1B6B]">
+          <h2 className="text-center text-3xl md:text-5xl font-bold text-[#3A1B6B]">
             SUPPORT OUR MISSION
           </h2>
 
-          <p className="mt-4 text-lg text-[#2D1B4E]">
+          <p className="mt-4 text-[0.8rem] md:text-lg text-[#2D1B4E]">
             1–2 liner catch/hook, then say join us etc blah blah.
           </p>
 

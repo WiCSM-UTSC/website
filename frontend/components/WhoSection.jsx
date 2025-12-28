@@ -20,7 +20,7 @@ export default function WhoWeAreSection() {
                   h-[220px]
                   rounded-2xl
                   bg-gray-200
-                  flex-shrink-0
+                  shrink-0
                 "
               />
             ))

@@ -24,11 +24,7 @@ Deno.serve(async (req) => {
     }
 
     //Make client
-    const supabase = createClient(supabaseUrl, serviceRoleKey, {
-      global: {
-        headers: { Authorization: authHeader,},
-      },
-    });
+    const supabase = createClient(supabaseUrl, serviceRoleKey);
 
     //Request not PUT
     if (req.method !== "PUT") {

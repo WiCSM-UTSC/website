@@ -1,4 +1,6 @@
 import { createClient } from "jsr:@supabase/supabase-js@2";
+import { Redis } from "https://deno.land/x/upstash_redis@v1.19.3/mod.ts";
+import { Ratelimit } from "https://cdn.skypack.dev/@upstash/ratelimit@latest";
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 Deno.serve(async (req) => {
   try { 
@@ -11,10 +13,13 @@ Deno.serve(async (req) => {
     const receiverEmail = Deno.env.get("CONTACT_RECEIVER_EMAIL");
     const emailTemplate = Deno.env.get("MAILERSEND_CONTACT_TEMPLATE_ID");
 
+    const redisUrl = Deno.env.get("UPSTASH_REDIS_REST_URL");
+    const redisToken = Deno.env.get("UPSTASH_REDIS_REST_TOKEN");
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
 
     //If keys are not found
-    if (!supabaseUrl || !serviceRoleKey || !mailerSendKey || !fromEmail || !receiverEmail || !emailTemplate) {
+    if (!supabaseUrl || !serviceRoleKey || !mailerSendKey || !fromEmail || !receiverEmail || !emailTemplate || !redisUrl || !redisToken) {
       return new Response(JSON.stringify({ error: "Env vars missing"
       }), {
         status: 500,
@@ -22,6 +27,39 @@ Deno.serve(async (req) => {
       });
     }
 
+    //get the limiter 
+
+    const {
+      data: { user },
+    } = await supabaseClient.auth.getUser(token)
+    if (!user) throw new Error('no user')
+    console.log(user.id)
+
+    const redis = new Redis({url: redisUrl, token: redisToken,});
+
+    const ratelimit = new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(2, '10 s'), //2 req per 10s
+      analytics: true,
+    })
+
+    // use identifier based on IP address 
+    const identifier = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const { success } = await ratelimit.limit(identifier);
+
+    if (!success) {
+      return new Response(
+        JSON.stringify({
+          error: 'Rate limit exceeded',
+          retry_after: 60,
+        }),
+        {
+          status: 429,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    }
+  
     //Request not POST
     if (req.method !== "POST") {
       return new Response(
@@ -30,6 +68,15 @@ Deno.serve(async (req) => {
           headers: { "Content-Type": "application/json"} 
       });
     }
+
+    //test for now
+    return new Response(
+      JSON.stringify({
+        success: true,
+        status: "email_sent",
+        }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
 
     //Get request 
     let body;

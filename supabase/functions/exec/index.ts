@@ -38,7 +38,7 @@ Deno.serve(async (req) => {
         });
       }
 
-      const { id, role, bio } = body;
+      const { id, role, bio, name } = body;
 
       //Missing fields
       if (!id) {
@@ -48,9 +48,10 @@ Deno.serve(async (req) => {
         );
       }
 
-      const updates: { bio?: string; role?: string } = {};
+      const updates: { bio?: string; role?: string; name?: string } = {};
       if(bio !== undefined) updates.bio = bio; 
       if(role !== undefined) updates.role = role; 
+      if(name !== undefined) updates.name = name; 
       const { error } = await supabase.from("exec_team").update(updates).eq("id", id).select().maybeSingle();
 
       if (error) {

@@ -1,6 +1,6 @@
 export default function JoinUsSection() {
   return (
-    <div className="bg-gradient-to-br from-blue-300 via-purple-300 to-blue-400 py-20 px-6">
+    <div className="bg-gradient-to-b from-purple-400 via-purple-300 to-blue-300 py-20 px-6">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-4xl font-bold text-purple-900 mb-4">
           Join Us

@@ -5,7 +5,7 @@ interface ContactHeaderProps {
 
 export default function ContactHeader({ title, subtitle }: ContactHeaderProps) {
   return (
-    <div className="relative bg-gradient-to-br from-purple-400 via-blue-300 to-blue-400 pt-32 pb-20 px-6">
+    <div className="relative bg-gradient-to-b from-purple-400 via-blue-300 to-purple-300 pt-32 pb-20 px-6">
       {/* Browser-like header bar */}
       <div className="max-w-4xl mx-auto mb-8">
         <div className="bg-white/90 backdrop-blur rounded-t-xl p-3 flex items-center gap-2 shadow-lg">

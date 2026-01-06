@@ -38,7 +38,7 @@ Deno.serve(async (req) => {
         });
       }
 
-      const { id, role, bio, name } = body;
+      const { id, role, bio, name, image_url, order_index } = body;
 
       //Missing fields
       if (!id) {
@@ -48,10 +48,23 @@ Deno.serve(async (req) => {
         );
       }
 
-      const updates: { bio?: string; role?: string; name?: string } = {};
+      // Validate order_index is an integer if provided
+      if (order_index !== undefined && order_index !== null) {
+        if (typeof order_index !== "number" || !Number.isInteger(order_index)) {
+          return new Response(
+            JSON.stringify({ error: "order_index must be an integer" }),
+            { status: 400, headers: { "Content-Type": "application/json" } }
+          );
+        }
+      }
+
+      const updates: { bio?: string; role?: string; name?: string; image_url?:string; order_index?:int } = {};
       if(bio !== undefined) updates.bio = bio; 
       if(role !== undefined) updates.role = role; 
       if(name !== undefined) updates.name = name; 
+      if(image_url !== undefined) updates.image_url = image_url; 
+      if(order_index !== undefined && order_index !== null) updates.order_index = order_index; 
+
       const { error } = await supabase.from("exec_team").update(updates).eq("id", id).select().maybeSingle();
 
       if (error) {

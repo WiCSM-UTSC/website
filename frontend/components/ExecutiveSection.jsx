@@ -1,4 +1,5 @@
 import FlipCard from "./FlipCard";
+import SectionHeader from "./SectionHeader";
 
 const execTeamData = [
     {
@@ -168,9 +169,9 @@ export default function ExecutiveSection() {
     return (
         <section className="py-10 px-6 text-center">
             <div className="max-w-6xl mx-auto text-center">
-                <h2 className="text-7xl font-bold mb-6 [color:#513c97]">
+                <SectionHeader>
                     Executive Team
-                </h2>
+                </SectionHeader>
 
                 <p className="max-w-2xl mx-auto text-4xl font-bold mb-20 [color:#513c97]">
                     Meet the amazing people at WiCSM!

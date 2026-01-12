@@ -1,11 +1,15 @@
 "use client";
 
+import SectionHeader from "./SectionHeader";
+
 export default function WhoWeAreSection() {
   return (
     <section className="py-32 bg-white overflow-hidden">
-      <h2 className="text-5xl font-bold text-center mb-16 text-[#3A1B6B]">
-        WHO WE ARE
-      </h2>
+      <div className="text-center mb-16">
+        <SectionHeader>
+          WHO WE ARE
+        </SectionHeader>
+      </div>
 
       {/* VIEWPORT */}
       <div className="relative w-full overflow-hidden">

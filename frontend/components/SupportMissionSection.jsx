@@ -7,15 +7,8 @@ export default function SupportMissionSection() {
       <div className="flex-col md:flex-row flex items-center justify-between gap-24">
 
         {/* LEFT: Image / placeholder */}
-        <div
-          className="
-            w-[360px]
-            h-[360px]
-            rounded-3xl
-            bg-white
-            shadow-[0_0_40px_rgba(155,147,232,0.6)]
-          "
-        />
+        <div className="w-[250px] h-[250px] md:w-[360px] md:h-[360px] rounded-3xl 
+                        bg-white shadow-[0_0_40px_rgba(155,147,232,0.6)] shrink-0" />
 
         {/* RIGHT: Text + CTA */}
         <div className="max-w-xl">

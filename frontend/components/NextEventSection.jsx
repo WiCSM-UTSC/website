@@ -17,9 +17,8 @@ export default function NextEventSection() {
 
         {/* CONTENT */}
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-24">
-          {/* LEFT TEXT */}
           <p className="text-lg text-[#2D1B4E] max-w-md leading-relaxed">
-            Short description or hook regarding joining our next event. Learn,
+            Short description or hook regarding joining our next event.Learn, 
             connect, and grow with the WiCSM community.
           </p>
 
@@ -36,7 +35,7 @@ export default function NextEventSection() {
             "
           >
             {/* Placeholder — swap later */}
-            <div className="text-gray-400">Event Image</div>
+            <div className="text-gray-400"> Event Image</div>
 
             {/*
             <Image

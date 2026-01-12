@@ -38,6 +38,16 @@ Deno.serve(async (req) => {
         });
       }
 
+      // Only allow these fields
+      const allowedPut = new Set(["id", "role", "bio", "name", "image_url", "order_index"]);
+      const extraPutFields = Object.keys(body).filter((k) => !allowedPut.has(k));
+      if (extraPutFields.length) {
+        return new Response(
+          JSON.stringify({ error: `Unexpected fields: ${extraPutFields.join(", ")}` }),
+          { status: 400, headers: { "Content-Type": "application/json" } }
+        );
+      }
+
       const { id, role, bio, name, image_url, order_index } = body;
 
       //Missing fields

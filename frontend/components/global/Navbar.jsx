@@ -14,7 +14,7 @@ export default function Navbar() {
             <div className="flex-1 flex justify-center">
                 <div className="flex gap-20 font-bold [color:#54528F] text-xl">
                     <Link href="/">HOME</Link>
-                    <Link href="/about">ABOUT</Link>
+                    <Link href="/aboutus">ABOUT</Link>
                     <Link href="/events">EVENTS</Link>
                     <Link href="/contact">CONTACT</Link>
                 </div>

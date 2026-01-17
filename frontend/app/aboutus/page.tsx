@@ -1,7 +1,7 @@
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/global/Navbar';
 import AboutSection from '@/components/AboutSection';
 import ExecutiveSection from '@/components/ExecutiveSection';
-import Footer from '@/components/Footer';
+import Footer from '@/components/global/Footer';
 
 export default function AboutUsPage() {
     return (

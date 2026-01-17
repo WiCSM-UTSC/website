@@ -1,4 +1,4 @@
-import SectionHeader from "./SectionHeader";
+import SectionHeader from "./global/SectionHeader";
 
 export default function AboutSection(){
     return (

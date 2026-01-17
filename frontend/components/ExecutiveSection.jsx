@@ -1,5 +1,5 @@
 import FlipCard from "./FlipCard";
-import SectionHeader from "./SectionHeader";
+import SectionHeader from "./global/SectionHeader";
 
 const execTeamData = [
     {

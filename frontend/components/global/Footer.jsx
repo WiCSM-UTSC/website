@@ -33,8 +33,8 @@ export default function Footer() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-x-10 gap-y-4 text-3xl font-semibold text-white pr-40">
-                        <a href="#" className="hover:underline">About Us </a>
-                        <a href="#" className="hover:underline">Events </a>
+                        <a href="/aboutus" className="hover:underline">About Us </a>
+                        <a href="/events" className="hover:underline">Events </a>
                         <a href="#" className="hover:underline">Join Us </a>
                         <a href="#" className="hover:underline">Contact </a>
                     </div>

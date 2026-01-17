@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${dmSans.className} antialiased`}
+        className={`${dmSans.className} antialiased min-h-screen m-0 p-0 overflow-x-hidden overscroll-none`}
       >
         {children}
       </body>

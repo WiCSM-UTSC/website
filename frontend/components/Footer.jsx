@@ -10,9 +10,9 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="h-[490px] bg-[linear-gradient(to_bottom,_#F9F6FF33_0%,_#F9F6FF33_10%,_#9BCEEE_35%,_#9BCEEE_45%,_#A9A7EB_75%,_#A9A7EB_100%)]">
+        <footer className="bg-[linear-gradient(to_bottom,_#F9F6FF33_0%,_#F9F6FF33_10%,_#9BCEEE_35%,_#9BCEEE_45%,_#A9A7EB_75%,_#A9A7EB_100%)]">
 
-            <div className="px-10 py-30">
+            <div className="px-10 pt-32 pb-16">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <Image

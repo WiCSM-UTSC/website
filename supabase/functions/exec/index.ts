@@ -69,7 +69,7 @@ Deno.serve(async (req) => {
       }
 
 
-      const updates: { bio?: string; role?: string; name?: string; image_url?:string; order_index?:int } = {};
+      const updates: { bio?: string; role?: string; name?: string; image_url?:string; order_index?:number } = {};
       if(bio !== undefined) updates.bio = bio; 
       if(role !== undefined) updates.role = role; 
       if(name !== undefined) updates.name = name; 

@@ -5,11 +5,7 @@ import { useState } from "react";
 export default function MainSection() {
   const [active, setActive] = useState(0);
 
-  const photos = [
-    "/photi1.png",
-    "/photi2.png",
-    "/photi3.png",
-  ];
+  const photos = ["/photi1.png", "/photi2.png", "/photi3.png"];
 
   return (
     <div className="bg-white">
@@ -24,6 +20,7 @@ export default function MainSection() {
           justify-center
           md:justify-between
           px-24
+          gap-3
           overflow-hidden
           bg-linear-to-br
           from-[#9B93E8]
@@ -33,13 +30,11 @@ export default function MainSection() {
       >
         {/* CONTENT */}
         <div className="relative z-10 max-w-xl text-center md:text-left order-2 md:order-1">
-          <h1 className="text-6xl md:text-9xl font-bold text-[#3A1B6B] drop-shadow-lg">
+          <h1 className="text-[90px] md:text-9xl font-bold text-[#3A1B6B] drop-shadow-lg">
             WiCSM
           </h1>
 
-          <h2 className="text-xl md:text-4xl mt-2 text-[#3A1B6B]">
-            UTSC
-          </h2>
+          <h2 className="text-4xl mt-2 text-[#3A1B6B]">UTSC</h2>
 
           <p className="mt-6 text-[0.8rem] md:text-lg text-[#2D1B4E]">
             Motto, saying Motto, saying Motto, saying Motto, saying
@@ -49,10 +44,9 @@ export default function MainSection() {
         {/* PHOTO STACK */}
         <div
           onClick={() => setActive((prev) => (prev + 1) % photos.length)}
-          className="relative cursor-pointer group order-1 md:order-2"
+          className="relative cursor-pointer group order-1 md:order-2 md:mr-15"
         >
           <div className="relative w-[320px] h-[320px]">
-
             {/* GLOW */}
             <div
               className="absolute inset-0 pointer-events-none"
@@ -77,12 +71,7 @@ export default function MainSection() {
                   }}
                 >
                   <div className="w-full h-full bg-white rounded-xl shadow-xl overflow-hidden">
-                    <Image
-                      src={src}
-                      alt=""
-                      fill
-                      className="object-cover"
-                    />
+                    <Image src={src} alt="" fill className="object-cover" />
                   </div>
                 </div>
               );
@@ -108,6 +97,20 @@ export default function MainSection() {
               #EEF5FF_100%
             )]
           "
+        />
+         <div
+          className="
+            pointer-events-none
+            absolute
+            -bottom-px
+            left-0
+            w-full
+            h-[30vh]
+            z-20
+            bg-linear-to-b
+            from-transparent
+            via-white/30
+            to-white"
         />
       </section>
     </div>

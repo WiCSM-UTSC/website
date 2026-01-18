@@ -12,7 +12,7 @@ export default function SupportMissionSection() {
 
         {/* RIGHT: Text + CTA */}
         <div className="max-w-xl">
-          <SectionHeader>
+          <SectionHeader className="align-middle">
             SUPPORT OUR MISSION
           </SectionHeader>
 

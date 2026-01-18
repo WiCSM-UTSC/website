@@ -18,15 +18,6 @@ Deno.serve(async (req) => {
 
     //put method
     if (req.method === "PUT") {
-      //check auth first 
-      const authHeader = req.headers.get("Authorization");
-      if (!authHeader) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-          status: 401,
-          headers: { "Content-Type": "application/json" },
-        });
-      }
-
       //Get request
       let body;
       try {
@@ -111,6 +102,7 @@ Deno.serve(async (req) => {
         }
       );
     }
+
     if (req.method === "POST") {
       const url = new URL(req.url);
       const parts = url.pathname.split("/").filter(Boolean);
@@ -118,27 +110,35 @@ Deno.serve(async (req) => {
       const execIndex = parts.indexOf("exec");
       if (execIndex !== -1 && parts[execIndex + 2] === "image") {
         const execId = parts[execIndex + 1];
-        const authHeader =
-          req.headers.get("authorization") ||
-          req.headers.get("Authorization") ||
-          "";
 
-        const token = authHeader.startsWith("Bearer ")
-          ? authHeader.slice("Bearer ".length).trim()
-          : "";
+        const MAX_FORM_BYTES = 25 * 1024 * 1024; 
+        const contentLengthHeader = req.headers.get("content-length");
+        if (contentLengthHeader) {
+          const contentLength = Number(contentLengthHeader);
+          if (Number.isFinite(contentLength) && contentLength > MAX_FORM_BYTES) {
+            return new Response(JSON.stringify({ error: "Payload too large" }), {
+              status: 413,
+              headers: { "Content-Type": "application/json" },
+            });
+          }
+        }
 
-        if (!token) {
-          return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
+        const { data: execRow, error: execErr } = await supabase
+          .from("exec_team")
+          .select("id")
+          .eq("id", execId)
+          .maybeSingle();
+
+        if (execErr) {
+          return new Response(JSON.stringify({ error: execErr.message }), {
+            status: 500,
             headers: { "Content-Type": "application/json" },
           });
         }
 
-        // Validate token with Supabase Auth
-        const { data: userData, error: userError } = await supabase.auth.getUser(token);
-        if (userError || !userData?.user) {
-          return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
+        if (!execRow) {
+          return new Response(JSON.stringify({ error: "Exec user not found" }), {
+            status: 404,
             headers: { "Content-Type": "application/json" },
           });
         }
@@ -160,6 +160,14 @@ Deno.serve(async (req) => {
             JSON.stringify({ error: "Missing file field 'image'" }),
             { status: 400, headers: { "Content-Type": "application/json" } }
           );
+        }
+
+        const MAX_IMAGE_BYTES = 25 * 1024 * 1024; // 25MB
+        if (image.size > MAX_IMAGE_BYTES) {
+          return new Response(JSON.stringify({ error: "Image too large" }), {
+            status: 413,
+            headers: { "Content-Type": "application/json" },
+          });
         }
 
         const imgType = (image.type || "").toLowerCase();

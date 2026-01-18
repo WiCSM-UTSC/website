@@ -1,5 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+
 Deno.serve(async (req) => {
   try {
     //get all constants

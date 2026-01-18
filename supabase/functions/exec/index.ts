@@ -14,21 +14,13 @@ Deno.serve(async (req) => {
       });
     }
 
-    const supabase = createClient(supabaseUrl,serviceRoleKey);
+    const supabase = createClient(supabaseUrl, serviceRoleKey);
 
     //put method
     if (req.method === "PUT") {
-      //check auth first 
-      const authHeader = req.headers.get("Authorization");
-      if (!authHeader) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-          status: 401,
-          headers: { "Content-Type": "application/json" },
-        });
-      }
-
       //Get request
       let body;
+
       try {
         body = await req.json();
       } catch {
@@ -39,12 +31,15 @@ Deno.serve(async (req) => {
       }
 
       // Only allow these fields
-      const allowedPut = new Set(["id", "role", "bio", "name", "image_url", "order_index"]);
-      const extraPutFields = Object.keys(body).filter((k) => !allowedPut.has(k));
+      const allowedPut = new Set([ "id", "role", "bio", "name", "image_url", "order_index", ]);
+      const extraPutFields = Object.keys(body).filter( (k) => !allowedPut.has(k),);
+
       if (extraPutFields.length) {
         return new Response(
-          JSON.stringify({ error: `Unexpected fields: ${extraPutFields.join(", ")}` }),
-          { status: 400, headers: { "Content-Type": "application/json" } }
+          JSON.stringify({
+            error: `Unexpected fields: ${extraPutFields.join(", ")}`,
+          }),
+          { status: 400, headers: { "Content-Type": "application/json" } },
         );
       }
 
@@ -52,9 +47,32 @@ Deno.serve(async (req) => {
 
       //Missing fields
       if (!id) {
+        return new Response(JSON.stringify({ error: "Missing fields." }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      // Check if id exists in exec_team (for indep error to not confuse with no data changed, even for a valid entry)
+      const { data: existingExec, error: findError } = await supabase
+        .from("exec_team")
+        .select("id")
+        .eq("id", id)
+        .maybeSingle();
+
+      //db error
+      if (findError) {
+        return new Response(JSON.stringify({ error: findError.message }), {
+          status: 500,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      //no data found = DNE
+      if (!existingExec) {
         return new Response(
-          JSON.stringify({error: "Missing fields.",}),
-          {status: 400, headers: { "Content-Type": "application/json" },}
+          JSON.stringify({ error: "Exec member with this id does not exist." }),
+          { status: 404, headers: { "Content-Type": "application/json" } },
         );
       }
 
@@ -63,20 +81,25 @@ Deno.serve(async (req) => {
         if (typeof order_index !== "number" || !Number.isInteger(order_index)) {
           return new Response(
             JSON.stringify({ error: "order_index must be an integer" }),
-            { status: 400, headers: { "Content-Type": "application/json" } }
+            { status: 400, headers: { "Content-Type": "application/json" } },
           );
         }
       }
 
+      const updates: { bio?: string; role?: string; name?: string; image_url?: string; order_index?: number; } = {};
 
-      const updates: { bio?: string; role?: string; name?: string; image_url?:string; order_index?:number } = {};
-      if(bio !== undefined) updates.bio = bio; 
-      if(role !== undefined) updates.role = role; 
-      if(name !== undefined) updates.name = name; 
-      if(image_url !== undefined) updates.image_url = image_url; 
-      if(order_index !== undefined && order_index !== null) updates.order_index = order_index; 
+      if (bio !== undefined) updates.bio = bio;
+      if (role !== undefined) updates.role = role;
+      if (name !== undefined) updates.name = name;
+      if (image_url !== undefined) updates.image_url = image_url;
+      if (order_index !== undefined && order_index !== null) updates.order_index = order_index;
 
-      const { error } = await supabase.from("exec_team").update(updates).eq("id", id).select().maybeSingle();
+      const { error } = await supabase
+        .from("exec_team")
+        .update(updates)
+        .eq("id", id)
+        .select()
+        .maybeSingle();
 
       if (error) {
         return new Response(JSON.stringify({ error: error.message }), {
@@ -85,15 +108,17 @@ Deno.serve(async (req) => {
         });
       }
 
-      //On success 
-      return new Response(JSON.stringify({ success: true, message: "Exec member updated." }), {
+      //On success
+      return new Response(
+        JSON.stringify({ success: true, message: "Exec member updated." }),
+        {
           status: 200,
           headers: { "Content-Type": "application/json" },
-      });
-
+        },
+      );
     }
 
-    //get method 
+    //get method
     if (req.method === "GET") {
       const { data, error } = await supabase
         .from("exec_team")
@@ -102,24 +127,21 @@ Deno.serve(async (req) => {
         .order("name", { ascending: true });
 
       if (error) {
-        return new Response(
-          JSON.stringify({ error: error.message }),
-          {
-            status: 400,
-            headers: { "Content-Type": "application/json" }
-          }
-        );
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        });
       }
 
       return new Response(
         JSON.stringify({
           success: true,
-          execs: data
+          execs: data,
         }),
         {
           status: 200,
-          headers: { "Content-Type": "application/json" }
-        }
+          headers: { "Content-Type": "application/json" },
+        },
       );
     }
     if (req.method === "POST") {
@@ -146,7 +168,8 @@ Deno.serve(async (req) => {
         }
 
         // Validate token with Supabase Auth
-        const { data: userData, error: userError } = await supabase.auth.getUser(token);
+        const { data: userData, error: userError } =
+          await supabase.auth.getUser(token);
         if (userError || !userData?.user) {
           return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
@@ -161,7 +184,7 @@ Deno.serve(async (req) => {
         } catch {
           return new Response(
             JSON.stringify({ error: "Request must be multipart/form-data" }),
-            { status: 400, headers: { "Content-Type": "application/json" } }
+            { status: 400, headers: { "Content-Type": "application/json" } },
           );
         }
 
@@ -169,7 +192,7 @@ Deno.serve(async (req) => {
         if (!(image instanceof File)) {
           return new Response(
             JSON.stringify({ error: "Missing file field 'image'" }),
-            { status: 400, headers: { "Content-Type": "application/json" } }
+            { status: 400, headers: { "Content-Type": "application/json" } },
           );
         }
 
@@ -177,21 +200,25 @@ Deno.serve(async (req) => {
         if (!imgType.startsWith("image/")) {
           return new Response(
             JSON.stringify({ error: "Uploaded file must be an image" }),
-            { status: 400, headers: { "Content-Type": "application/json" } }
+            { status: 400, headers: { "Content-Type": "application/json" } },
           );
         }
 
         const filename = image.name || "avatar.jpg";
         const extFromName = filename.includes(".")
-          ? filename.split(".").pop()?.toLowerCase() ?? ""
+          ? (filename.split(".").pop()?.toLowerCase() ?? "")
           : "";
 
         const extFromMime =
-          imgType === "image/jpeg" ? "jpg" :
-          imgType === "image/png" ? "png" :
-          imgType === "image/webp" ? "webp" :
-          imgType === "image/gif" ? "gif" :
-          "jpg";
+          imgType === "image/jpeg"
+            ? "jpg"
+            : imgType === "image/png"
+              ? "png"
+              : imgType === "image/webp"
+                ? "webp"
+                : imgType === "image/gif"
+                  ? "gif"
+                  : "jpg";
 
         const ext = extFromName ? extFromName : extFromMime;
 
@@ -200,7 +227,10 @@ Deno.serve(async (req) => {
 
         const { error: uploadError } = await supabase.storage
           .from(bucket)
-          .upload(objectPath, image, { contentType: imgType || undefined, upsert: true });
+          .upload(objectPath, image, {
+            contentType: imgType || undefined,
+            upsert: true,
+          });
 
         if (uploadError) {
           return new Response(JSON.stringify({ error: uploadError.message }), {
@@ -209,7 +239,9 @@ Deno.serve(async (req) => {
           });
         }
 
-        const { data: publicData } = supabase.storage.from(bucket).getPublicUrl(objectPath);
+        const { data: publicData } = supabase.storage
+          .from(bucket)
+          .getPublicUrl(objectPath);
         const imageUrl = publicData?.publicUrl;
 
         const { error: updateError } = await supabase
@@ -225,8 +257,12 @@ Deno.serve(async (req) => {
         }
 
         return new Response(
-          JSON.stringify({ success: true, exec_id: execId, image_url: imageUrl }),
-          { status: 200, headers: { "Content-Type": "application/json" } }
+          JSON.stringify({
+            success: true,
+            exec_id: execId,
+            image_url: imageUrl,
+          }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
         );
       }
     }
@@ -237,13 +273,10 @@ Deno.serve(async (req) => {
       try {
         body = await req.json();
       } catch {
-        return new Response(
-          JSON.stringify({ error: "Invalid JSON body" }),
-          {
-            status: 400,
-            headers: { "Content-Type": "application/json" }
-          }
-        );
+        return new Response(JSON.stringify({ error: "Invalid JSON body" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        });
       }
 
       const { name, role, image_url, bio, order_index } = body;
@@ -253,8 +286,8 @@ Deno.serve(async (req) => {
           JSON.stringify({ error: "Missing required fields: name, role" }),
           {
             status: 400,
-            headers: { "Content-Type": "application/json" }
-          }
+            headers: { "Content-Type": "application/json" },
+          },
         );
       }
 
@@ -266,48 +299,40 @@ Deno.serve(async (req) => {
             role,
             image_url,
             bio,
-            order_index: order_index ?? null
-          }
+            order_index: order_index ?? null,
+          },
         ])
         .select("id")
         .single();
 
       if (error) {
-        return new Response(
-          JSON.stringify({ error: error.message }),
-          {
-            status: 400,
-            headers: { "Content-Type": "application/json" }
-          }
-        );
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        });
       }
 
       return new Response(
         JSON.stringify({
           success: true,
-          exec_id: data.id
+          exec_id: data.id,
         }),
         {
           status: 200,
-          headers: { "Content-Type": "application/json" }
-        }
+          headers: { "Content-Type": "application/json" },
+        },
       );
     }
 
-    //method not allowed 
-    return new Response(
-      JSON.stringify({ error: "Method not allowed" }),
-      {
-        status: 405,
-        headers: { "Content-Type": "application/json" }
-      }
-    );
-    
+    //method not allowed
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
+      status: 405,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message
-    }), {
+    return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     });
   }
 });

@@ -17,7 +17,6 @@ function getTodayInToronto(): string {
 Deno.serve(async (req) => {
   const url = new URL(req.url);
   const path = url.pathname;
-
   if (path.endsWith("/past")) {
     if (req.method !== "GET") {
       return new Response("Method Not Allowed", { status: 405 });
@@ -47,6 +46,49 @@ Deno.serve(async (req) => {
       )
       .lt("date", today)
       .order("date", { ascending: false });
+
+    if (error) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    return new Response(JSON.stringify({ events: data ?? [] }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  if (path.endsWith("/upcoming")) {
+    if (req.method !== "GET") {
+      return new Response("Method Not Allowed", { status: 405 });
+    }
+
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      return new Response("Server misconfigured", { status: 500 });
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      global: {
+        headers: {
+          Authorization: req.headers.get("Authorization") ?? "",
+        },
+      },
+    });
+
+    const today = getTodayInToronto();
+
+    const { data, error } = await supabase
+      .from("events")
+      .select(
+        "id, title, description, date, start_time, end_time, location, image_url, signup_url, created_at, updated_at",
+      )
+      .gte("date", today)
+      .order("date", { ascending: true });
 
     if (error) {
       return new Response(JSON.stringify({ error: error.message }), {
@@ -133,3 +175,4 @@ Deno.serve(async (req) => {
     headers: { "Content-Type": "application/json" },
   });
 });
+

@@ -48,7 +48,7 @@ Deno.serve(async (req) => {
         );
       }
 
-      const { id, role, bio, name, image_url, order_index } = body;
+      const { id, role, bio, name, image_url, order_index, image_url, order_index } = body;
 
       //Missing fields
       if (!id) {
@@ -69,9 +69,23 @@ Deno.serve(async (req) => {
       }
 
       const updates: { bio?: string; role?: string; name?: string; image_url?:string; order_index?:int } = {};
+      // Validate order_index is an integer if provided
+      if (order_index !== undefined && order_index !== null) {
+        if (typeof order_index !== "number" || !Number.isInteger(order_index)) {
+          return new Response(
+            JSON.stringify({ error: "order_index must be an integer" }),
+            { status: 400, headers: { "Content-Type": "application/json" } }
+          );
+        }
+      }
+
+      const updates: { bio?: string; role?: string; name?: string; image_url?:string; order_index?:int } = {};
       if(bio !== undefined) updates.bio = bio; 
       if(role !== undefined) updates.role = role; 
       if(name !== undefined) updates.name = name; 
+      if(image_url !== undefined) updates.image_url = image_url; 
+      if(order_index !== undefined && order_index !== null) updates.order_index = order_index; 
+
       if(image_url !== undefined) updates.image_url = image_url; 
       if(order_index !== undefined && order_index !== null) updates.order_index = order_index; 
 
@@ -120,6 +134,114 @@ Deno.serve(async (req) => {
           headers: { "Content-Type": "application/json" }
         }
       );
+    }
+    if (req.method === "POST") {
+      const url = new URL(req.url);
+      const parts = url.pathname.split("/").filter(Boolean);
+
+      const execIndex = parts.indexOf("exec");
+      if (execIndex !== -1 && parts[execIndex + 2] === "image") {
+        const execId = parts[execIndex + 1];
+        const authHeader =
+          req.headers.get("authorization") ||
+          req.headers.get("Authorization") ||
+          "";
+
+        const token = authHeader.startsWith("Bearer ")
+          ? authHeader.slice("Bearer ".length).trim()
+          : "";
+
+        if (!token) {
+          return new Response(JSON.stringify({ error: "Unauthorized" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
+        // Validate token with Supabase Auth
+        const { data: userData, error: userError } = await supabase.auth.getUser(token);
+        if (userError || !userData?.user) {
+          return new Response(JSON.stringify({ error: "Unauthorized" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
+        // Parse multipart/form-data (this will throw if not multipart)
+        let form;
+        try {
+          form = await req.formData();
+        } catch {
+          return new Response(
+            JSON.stringify({ error: "Request must be multipart/form-data" }),
+            { status: 400, headers: { "Content-Type": "application/json" } }
+          );
+        }
+
+        const image = form.get("image");
+        if (!(image instanceof File)) {
+          return new Response(
+            JSON.stringify({ error: "Missing file field 'image'" }),
+            { status: 400, headers: { "Content-Type": "application/json" } }
+          );
+        }
+
+        const imgType = (image.type || "").toLowerCase();
+        if (!imgType.startsWith("image/")) {
+          return new Response(
+            JSON.stringify({ error: "Uploaded file must be an image" }),
+            { status: 400, headers: { "Content-Type": "application/json" } }
+          );
+        }
+
+        const filename = image.name || "avatar.jpg";
+        const extFromName = filename.includes(".")
+          ? filename.split(".").pop()?.toLowerCase() ?? ""
+          : "";
+
+        const extFromMime =
+          imgType === "image/jpeg" ? "jpg" :
+          imgType === "image/png" ? "png" :
+          imgType === "image/webp" ? "webp" :
+          imgType === "image/gif" ? "gif" :
+          "jpg";
+
+        const ext = extFromName ? extFromName : extFromMime;
+
+        const bucket = "exec-images";
+        const objectPath = `${execId}.${ext}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from(bucket)
+          .upload(objectPath, image, { contentType: imgType || undefined, upsert: true });
+
+        if (uploadError) {
+          return new Response(JSON.stringify({ error: uploadError.message }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
+        const { data: publicData } = supabase.storage.from(bucket).getPublicUrl(objectPath);
+        const imageUrl = publicData?.publicUrl;
+
+        const { error: updateError } = await supabase
+          .from("exec_team")
+          .update({ image_url: imageUrl })
+          .eq("id", execId);
+
+        if (updateError) {
+          return new Response(JSON.stringify({ error: updateError.message }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
+        return new Response(
+          JSON.stringify({ success: true, exec_id: execId, image_url: imageUrl }),
+          { status: 200, headers: { "Content-Type": "application/json" } }
+        );
+      }
     }
 
     //post method

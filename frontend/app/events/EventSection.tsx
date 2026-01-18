@@ -1,6 +1,12 @@
 import EventCard from "./EventCard";
 
-export default function CurrentEventSection() {
+type eventSectionProp = { 
+  isCurrent: Boolean; 
+}
+
+//TODO: Add list into prop for events that will be passed down into page 
+
+export default function EventSection({ isCurrent }: eventSectionProp) {
   const events = [
     {
       monthLabel: "SEPTEMBER 2025",
@@ -18,9 +24,10 @@ export default function CurrentEventSection() {
   return (
     <section className="mb-16">
       <h2 className="text-2xl md:text-5xl font-semibold text-[#513C97] mb-6">
-        Current Events
+        {isCurrent ? "Current Events" : "Past Events"}
       </h2>
       <div className="flex flex-col gap-10">
+        {/* UNCOMMENT WHEN INTEGRATING API INTO EVENTS */}
         {/* {currentEvents.map((events) => (
               <EventCard key={event.id} event={event} isCurrent={true} />
             ))} */}

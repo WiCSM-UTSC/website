@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Navbar() {
     return (
-        <nav className="border-3 border-[#54528F] rounded-3xl flex items-center py-2 px-7 max-w-5xl mx-auto">
+        <nav className="border-3 border-[#54528F] rounded-3xl flex items-center py-2 px-4 sm:px-6 md:px-14 max-w-5xl mx-auto sm:mx-6 md:mx-auto">
             <Image
                 src="/wicsm_logo_transparent_1.png"
                 alt="WiCSM Logo"

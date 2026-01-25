@@ -1,61 +1,52 @@
 import Image from "next/image";
 
 export default function Footer() {
-    return (
-        <footer className="h-[490px] bg-[linear-gradient(to_bottom,_#F9F6FF33_0%,_#F9F6FF33_10%,_#9BCEEE_35%,_#9BCEEE_45%,_#A9A7EB_75%,_#A9A7EB_100%)]">
+  return (
+    <footer className="bg-[linear-gradient(to_bottom,_#F9F6FF33_0%,_#9BCEEE_45%,_#A9A7EB_100%)] px-8 py-16">
+      
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-12 max-w-6xl mx-auto">
 
-            <div className="px-10 py-30">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <Image
-                            src="/wicsm_logo_transparent_1.png"
-                            alt="WiCSM Logo"
-                            width={170}
-                            height={170}
-                            className="drop-shadow-[0_5px_5px_rgba(0,0,0,0.4)]"
-                        />
+        <div className="flex items-center gap-4">
+          <Image
+            src="/wicsm_logo_transparent_1.png"
+            alt="WiCSM Logo"
+            width={120}
+            height={120}
+          />
+          <div>
+            <p className="text-[#54528F] font-semibold text-4xl">WiCSM</p>
+            <p className="text-[#54528F] text-sm">
+              Women in Computer Science, Statistics and Mathematics UTSC
+            </p>
+          </div>
+        </div>
 
-                        <div>
-                            <p className="text-[#54528F] font-semibold text-8xl">WiCSM</p>
-                            <p className="px-2 text-[#54528F] font-semibold text-lg">
-                                Women in Computer Science, Statistics and <br />
-                                Mathematics UTSC
-                            </p>
-                        </div>
-                    </div>
+        <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-lg font-semibold text-white">
+          <a href="#">QUICKLINK 1</a>
+          <a href="#">QUICKLINK 2</a>
+          <a href="#">QUICKLINK 3</a>
+          <a href="#">QUICKLINK 4</a>
+        </div>
+      </div>
 
-                    <div className="grid grid-cols-2 gap-x-10 gap-y-4 text-3xl font-semibold text-white pr-40">
-                        <a href="#" className="hover:underline">QUICKLINK 1 </a>
-                        <a href="#" className="hover:underline">QUICKLINK 2 </a>
-                        <a href="#" className="hover:underline">QUICKLINK 3 </a>
-                        <a href="#" className="hover:underline">QUICKLINK 4 </a>
-                    </div>
-                </div>
+      <div className="w-full h-[2px] bg-[#674B91] opacity-20 my-10" />
 
-                <div className="w-full h-[4px] bg-[#674B91] opacity-20 mt-4"></div>
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6 max-w-6xl mx-auto">
 
-                <div className="flex justify-between items-end">
-                    <p className="text-white px-6 py-6 font-semibold text-1xl">
-                        WiCSM @ 2026. All rights reserved.
-                    </p>
+        <p className="text-white text-sm">
+          WiCSM © 2026. All rights reserved.
+        </p>
 
-                    <div className="flex gap-4 pr-10 pb-1">
-                        <a href="#" className="w-12 h-12 bg-white hover:bg-gray-200 transition-colors"></a>
-                        <a href="#" className="w-12 h-12 bg-white hover:bg-gray-200 transition-colors"></a>
-                        <a href="#" className="w-12 h-12 bg-white hover:bg-gray-200 transition-colors"></a>
-                        <a href="#" className="w-12 h-12 bg-white hover:bg-gray-200 transition-colors"></a>
-                    </div>
-                </div>
-
-
-            </div>
-
-            
-
-            
-           
-
-
-        </footer> 
-    )
+        <div className="flex gap-4">
+          {[1, 2, 3, 4].map((_, i) => (
+            <a
+              key={i}
+              href="#"
+              className="w-10 h-10 bg-white rounded-full hover:bg-gray-200 transition"
+            />
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
 }

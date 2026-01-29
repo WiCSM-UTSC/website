@@ -28,8 +28,8 @@ export default function WhoWeAreSection() {
                 key={`${loopIndex}-${i}`}
                 className="
                   relative
-                  min-w-[360px]
-                  h-[260px]
+                  min-w-[240px] sm:min-w-[300px] md:min-w-[360px]
+                  h-[180px] sm:h-[220px] md:h-[260px]
                   rounded-2xl
                   overflow-hidden
                   bg-gray-200

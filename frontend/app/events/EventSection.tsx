@@ -1,25 +1,30 @@
-import EventCard from "./EventCard";
+import React from "react";
+import { Event } from "./page";
+import { FaRegCalendarAlt } from "react-icons/fa";
 
-type eventSectionProp = { 
-  isCurrent: Boolean; 
-}
+type EventSectionProps = {
+  isCurrent: boolean;
+  events: Event[];
+  loading?: boolean;
+};
 
-//TODO: Add list into prop for events that will be passed down into page 
-
-export default function EventSection({ isCurrent }: eventSectionProp) {
-  const events = [
-    {
-      monthLabel: "SEPTEMBER 2025",
-      weekday: "MON",
-      day: "25",
-      meta: "September 25 Location: IC Atrium @ 3:00 pm - 8:00 pm",
-      title:
-        "Antimicrobial Resistance Across Canada: Youth Leading Change in Policy and Practice",
-      description:
-        "Join SCWIST, CanAMR Net, and EPIC on November 17 during National AMR Week for a special event hosted. Learn how to think like a recruiter with WiCSM x Bell! Listen to and network with a panel of tech professionals.",
-      posterSrc: "/globe.svg",
-    },
-  ];
+export default function EventSection({
+  isCurrent,
+  events,
+  loading,
+}: EventSectionProps) {
+  // Helper to format date and weekday
+  function getDateParts(dateStr: string) {
+    const date = new Date(dateStr);
+    const monthLabel = date
+      .toLocaleString("default", { month: "long", year: "numeric" })
+      .toUpperCase();
+    const weekday = date
+      .toLocaleString("default", { weekday: "short" })
+      .toUpperCase();
+    const day = date.getDate().toString();
+    return { monthLabel, weekday, day };
+  }
 
   return (
     <section className="mb-16">
@@ -27,37 +32,43 @@ export default function EventSection({ isCurrent }: eventSectionProp) {
         {isCurrent ? "Current Events" : "Past Events"}
       </h2>
       <div className="flex flex-col gap-10">
-        {/* UNCOMMENT WHEN INTEGRATING API INTO EVENTS */}
-        {/* {currentEvents.map((events) => (
-              <EventCard key={event.id} event={event} isCurrent={true} />
-            ))} */}
-        <EventCard
-          monthLabel="SEPTEMBER 2025"
-          weekday="MON"
-          day="25"
-          meta="September 25 Location: IC Atrium @ 3:00 pm - 8:00 pm"
-          title="Antimicrobial Resistance Across Canada: Youth Leading Change in Policy and Practice"
-          description="Join SCWIST, CanAMR Net, and EPIC on November 17 during National AMR Week for a special event hosted. Learn how to think like a recruiter with WiCSM x Bell! Listen to and network with a panel of tech professionals."
-          posterSrc="/globe.svg"
-        />
-        <EventCard
-          monthLabel="SEPTEMBER 2025"
-          weekday="MON"
-          day="25"
-          meta="September 25 Location: IC Atrium @ 3:00 pm - 8:00 pm"
-          title="Antimicrobial Resistance Across Canada: Youth Leading Change in Policy and Practice"
-          description="Join SCWIST, CanAMR Net, and EPIC on November 17 during National AMR Week for a special event hosted. Learn how to think like a recruiter with WiCSM x Bell! Listen to and network with a panel of tech professionals."
-          posterSrc="/globe.svg"
-        />
-        <EventCard
-          monthLabel="SEPTEMBER 2025"
-          weekday="MON"
-          day="25"
-          meta="September 25 Location: IC Atrium @ 3:00 pm - 8:00 pm"
-          title="Antimicrobial Resistance Across Canada: Youth Leading Change in Policy and Practice"
-          description="Join SCWIST, CanAMR Net, and EPIC on November 17 during National AMR Week for a special event hosted. Learn how to think like a recruiter with WiCSM x Bell! Listen to and network with a panel of tech professionals."
-          posterSrc="/globe.svg"
-        />
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <span className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#513C97] mr-4"></span>
+            <span className="text-lg text-[#513C97] font-medium">
+              Loading events...
+            </span>
+          </div>
+        ) : events.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12">
+            <FaRegCalendarAlt size={48} className="mb-2 text-[#513C97]" />
+            <span className="text-lg text-[#513C97] font-medium">
+              No events found.
+            </span>
+          </div>
+        ) : (
+          events.map((event) => {
+            //Extract date information 
+            const { monthLabel, weekday, day } = getDateParts(event.date);
+            return (
+              <EventCard
+                key={event.id}
+                monthLabel={monthLabel}
+                weekday={weekday}
+                day={day}
+                meta={
+                  event.location
+                    ? `${event.date} Location: ${event.location}`
+                    : event.date
+                }
+                title={event.title}
+                description={event.description || ""}
+                posterSrc={event.image_url || "/globe.svg"}
+                titleLink={event.signup_url || undefined}
+              />
+            );
+          })
+        )}
       </div>
     </section>
   );

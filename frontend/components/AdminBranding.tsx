@@ -17,19 +17,19 @@ export default function AdminBranding() {
           <Image
             src="/wicsm_logo_transparent_1.png"
             alt="WiCSM Logo"
-            width={600}
-            height={700}
+            width={920}
+            height={1040}
             className="object-contain"
           />
         </div>
       </div>
 
-      <h1 className="text-7xl font-bold mb-2" style={{ color: '#390D67' }}>
+      <h1 className="text-8xl font-bold mb-2" style={{ color: '#390D67' }}>
         WiCSM
       </h1>
       
-      <p className="text-lg text-center" style={{ color: '#390D67' }}>
-        Women in Computer Science, Statistics &<br />Mathematics
+      <p className="text-lg text-left-align" style={{ color: '#390D67' }}>
+        Women in Computer Science, Statistics<br /> & Mathematics
       </p>
     </div>
   );

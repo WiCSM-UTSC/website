@@ -1,4 +1,5 @@
 import Image from "next/image";
+import SectionHeader from "./SectionHeader";
 
 export default function NextEventSection() {
   return (
@@ -11,9 +12,9 @@ export default function NextEventSection() {
     >
       <div className="relative max-w-7xl mx-auto px-24">
         {/* TITLE */}
-        <h2 className="text-5xl font-bold text-[#3A1B6B] text-center mb-24">
-          JOIN OUR NEXT EVENT
-        </h2>
+        <div className="mb-24">
+          <SectionHeader>JOIN OUR NEXT EVENT</SectionHeader>
+        </div>
 
         {/* CONTENT */}
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-24">

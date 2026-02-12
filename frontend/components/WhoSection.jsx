@@ -22,18 +22,15 @@ export default function WhoWeAreSection() {
       <div className="relative w-full overflow-hidden">
         {/* SLIDER */}
         <div className="flex gap-6 sm:gap-8 animate-carousel px-6 sm:px-16 md:px-24">
-          {[...Array(2)].flatMap((_, loopIndex) =>
+          {[...Array(2)].flatMap((_, loopIndex) => 
             images.map((src, i) => (
               <div
                 key={`${loopIndex}-${i}`}
                 className="
-                  relative
-                  min-w-[180px] sm:min-w-[260px] md:min-w-[360px]
-                  h-[140px] sm:h-[200px] md:h-[260px]
-                  rounded-2xl
-                  overflow-hidden
-                  bg-gray-200
-                  shrink-0
+                  relative shrink-0 overflow-hidden rounded-2xl
+                  min-w-[180px] h-[140px]
+                  sm:min-w-[260px] sm:h-[200px]
+                  md:min-w-[360px] md:h-[260px]
                 "
               >
                 <Image
@@ -42,11 +39,10 @@ export default function WhoWeAreSection() {
                   fill
                   className="object-cover"
                 />
-              </div>
-            ))
-          )}
-        </div>
-      </div>
-    </section>
+         </div>
+       ))
+     )}
+  </div>
+</section>
   );
 }

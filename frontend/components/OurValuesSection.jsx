@@ -21,7 +21,11 @@ export default function OurValuesSection() {
         }}
       />
 
-      <h2 className="text-5xl font-bold text-[#2D1B4E] mb-20">OUR VALUES</h2>
+       <div className="mb-20">
+         <SectionHeader>
+           OUR VALUES
+         </SectionHeader>
+       </div>
 
       <div className="flex flex-col items-center md:flex-row justify-center gap-12">
         <ValueCard

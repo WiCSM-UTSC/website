@@ -22,7 +22,7 @@ export default function WhoWeAreSection() {
       <div className="relative w-full overflow-hidden">
         {/* SLIDER */}
         <div className="flex gap-6 sm:gap-8 animate-carousel px-6 sm:px-16 md:px-24">
-          {[...Array(2)].flatMap((_, loopIndex) => 
+          {[...Array(2)].flatMap((_, loopIndex) =>
             images.map((src, i) => (
               <div
                 key={`${loopIndex}-${i}`}
@@ -39,10 +39,11 @@ export default function WhoWeAreSection() {
                   fill
                   className="object-cover"
                 />
-         </div>
-       ))
-     )}
-  </div>
-</section>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </section>
   );
 }

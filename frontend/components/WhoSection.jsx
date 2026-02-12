@@ -21,15 +21,15 @@ export default function WhoWeAreSection() {
       {/* VIEWPORT */}
       <div className="relative w-full overflow-hidden">
         {/* SLIDER */}
-        <div className="flex gap-10 animate-carousel px-24">
+        <div className="flex gap-6 sm:gap-8 animate-carousel px-6 sm:px-16 md:px-24">
           {[...Array(2)].flatMap((_, loopIndex) =>
             images.map((src, i) => (
               <div
                 key={`${loopIndex}-${i}`}
                 className="
                   relative
-                  min-w-[240px] sm:min-w-[300px] md:min-w-[360px]
-                  h-[180px] sm:h-[220px] md:h-[260px]
+                  min-w-[180px] sm:min-w-[260px] md:min-w-[360px]
+                  h-[140px] sm:h-[200px] md:h-[260px]
                   rounded-2xl
                   overflow-hidden
                   bg-gray-200

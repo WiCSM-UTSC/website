@@ -1,34 +1,25 @@
 export default function MapSection() {
   return (
-    <div className="bg-gradient-to-b from-blue-300 via-purple-300 to-purple-400 py-16 px-6">
+    <div className="py-12 px-6">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-4xl font-bold text-center text-purple-900 mb-4">
+        <h2 className="text-4xl font-bold text-center text-[#54528F] mb-2">
           Find us on campus
         </h2>
-        <p className="text-center text-purple-800 mb-8">
-          Visit us at our office or attend one of our events!
+        <p className="text-center text-[#54528F] mb-8 text-sm">
+          1265 Military Trail, Scarborough, ON M1C 1A4
         </p>
 
-        <div className="bg-white/90 backdrop-blur rounded-2xl p-4 shadow-xl">
+        <div className="bg-white/80 backdrop-blur rounded-3xl p-4 shadow-lg">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2886.454806183469!2d-79.39733492346658!3d43.66274497110232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b34c8a0133eef%3A0x5c5b0f8c5c5b0f8c!2sUniversity%20of%20Toronto!5e0!3m2!1sen!2sca!4v1234567890123!5m2!1sen!2sca"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2876.871891891892!2d-79.18992!3d43.7844!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cd4a3b5e0b5b%3A0x5026b7c208c24f04!2sUniversity%20of%20Toronto%20Scarborough!5e0!3m2!1sen!2sca!4v1737745000000!5m2!1sen!2sca&style=feature:all|element:geometry|color:0x242f3e&style=feature:all|element:labels.text.stroke|color:0x242f3e&style=feature:all|element:labels.text.fill|color:0x746855"
             width="100%"
             height="400"
-            style={{ border: 0, borderRadius: '12px' }}
+            style={{ border: 0, borderRadius: '16px' }}
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             title="WiCSM Location Map"
-          />
-        </div>
-
-        <div className="mt-6 text-center">
-          <p className="text-purple-900 font-medium">
-            📍 Computer Science Building, Room 101
-          </p>
-          <p className="text-purple-800">
-            Open hours: Monday - Friday, 9 AM - 5 PM
-          </p>
+          ></iframe>
         </div>
       </div>
     </div>

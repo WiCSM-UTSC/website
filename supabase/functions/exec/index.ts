@@ -143,20 +143,21 @@ Deno.serve(async (req) => {
       if (execIndex !== -1 && parts[execIndex + 2] === "image") {
         const execId = parts[execIndex + 1];
 
+        // Validate exec ID exists FIRST before processing any file data
+        if (!execId || execId.trim() === "") {
+          return new Response(
+            JSON.stringify({ error: "Missing exec ID in URL path." }),
+            { status: 400, headers: { "Content-Type": "application/json" } },
+          );
+        }
+
         const { data: existingExec, error: findError } = await supabase
           .from("exec_team")
           .select("id")
           .eq("id", execId)
-          .maybeSingle();
+          .single();
 
-        if (findError) {
-          return new Response(JSON.stringify({ error: findError.message }), {
-            status: 500,
-            headers: { "Content-Type": "application/json" },
-          });
-        }
-
-        if (!existingExec) {
+        if (findError || !existingExec) {
           return new Response(
             JSON.stringify({ error: "Exec member with this id does not exist." }),
             { status: 404, headers: { "Content-Type": "application/json" } },
@@ -239,6 +240,21 @@ Deno.serve(async (req) => {
 
         const bucket = "exec-images";
         const objectPath = `${execId}.${ext}`;
+        const { data: existingFiles } = await supabase.storage
+          .from(bucket)
+          .list("", {
+            search: execId,
+          });
+
+        if (existingFiles && existingFiles.length > 0) {
+          const filesToDelete = existingFiles
+            .filter((file) => file.name.startsWith(`${execId}.`))
+            .map((file) => file.name);
+
+          if (filesToDelete.length > 0) {
+            await supabase.storage.from(bucket).remove(filesToDelete);
+          }
+        }
 
         const { error: uploadError } = await supabase.storage
           .from(bucket)

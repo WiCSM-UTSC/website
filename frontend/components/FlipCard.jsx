@@ -85,7 +85,7 @@ export default function FlipCard({
                         }}
                     >
 
-                        <p className="text-lg font-bold text-center leading-relaxed">
+                        <p className="text-lg font-bold text-black text-center leading-relaxed">
                             {description}
                         </p>
                     </div>

@@ -1,106 +1,34 @@
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "jsr:@supabase/supabase-js@2";
-
-console.info("update-event function started");
+// deno-lint-ignore-file no-explicit-any
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 Deno.serve(async (req) => {
-  if (req.method !== "PATCH") {
-    return new Response("Method Not Allowed", {
-      status: 405,
-    });
-  }
-
-  let body;
   try {
-    body = await req.json();
-  } catch (_err) {
-    return new Response("Invalid JSON body", {
-      status: 400,
+    const { email, password } = await req.json();
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!
+    );
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
     });
-  }
 
-  const { id, title, date } = body;
+    if (error) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 400,
+      });
+    }
 
-  if (!id) {
-    return new Response("Missing 'id' in request body", {
-      status: 400,
+    return new Response(JSON.stringify(data.session), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
     });
-  }
-  const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-
-  if (!supabaseUrl || !supabaseKey) {
-    console.error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in env");
-    return new Response("Server misconfigured", {
+  } catch (err: any) {
+    return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
     });
   }
-
-  const supabase = createClient(supabaseUrl, supabaseKey);
-  const updates: { title?: string; date?: string } = {};
-
-  if (title !== undefined && title !== "") {
-    updates.title = title;
-  }
-  if (date !== undefined && date !== "") {
-    updates.date = date;
-  }
-  if (Object.keys(updates).length === 0) {
-    return new Response(
-      JSON.stringify({
-        error:
-          "No fields to update. Provide at least one of 'title' or 'date'.",
-      }),
-      {
-        status: 400,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  }
-
-  const { data, error } = await supabase
-    .from("events")
-    .update(updates)
-    .eq("id", id)
-    .select()
-    .maybeSingle();
-
-  if (error) {
-    console.error("update-event error", error);
-    return new Response(
-      JSON.stringify({
-        error: error.message,
-      }),
-      {
-        status: 400,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  }
-
-  if (!data) {
-    return new Response(
-      JSON.stringify({
-        error: "Event not found",
-      }),
-      {
-        status: 404,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  }
-
-  return new Response(JSON.stringify(data), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-      Connection: "keep-alive",
-    },
-  });
 });
+

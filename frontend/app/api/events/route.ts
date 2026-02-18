@@ -35,8 +35,8 @@ export async function GET() {
       headers,
     });
     const pastJson = await pastRes.json().catch(() => ({}));
-    // console.log("pastRes status:", pastRes.status);
-    // console.log("pastRes body:", pastJson);
+    console.log("pastRes status:", pastRes.status);
+    console.log("pastRes body:", pastJson);
 
     return NextResponse.json({
       upcoming: upcomingJson.events || [],

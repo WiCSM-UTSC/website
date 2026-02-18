@@ -10,10 +10,11 @@ type EventCardProps = {
   description: string;
   posterSrc?: string;
   posterAlt?: string;
-  titleLink?: string;     // ← OPTIONAL link
+  titleLink?: string;   
 };
 
-const EventCard: React.FC<EventCardProps> = ({
+
+function EventCard({
   monthLabel,
   weekday,
   day,
@@ -23,7 +24,7 @@ const EventCard: React.FC<EventCardProps> = ({
   posterSrc,
   posterAlt,
   titleLink,
-}) => {
+}: EventSectionProps) {
   return (
     <div className="event-card">
       {/* Top month header */}

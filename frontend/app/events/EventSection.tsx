@@ -1,5 +1,6 @@
 import React from "react";
 import { Event } from "./page";
+import EventCard from "./EventCard";
 import { FaRegCalendarAlt } from "react-icons/fa";
 
 type EventSectionProps = {
@@ -15,7 +16,9 @@ export default function EventSection({
 }: EventSectionProps) {
   // Helper to format date and weekday
   function getDateParts(dateStr: string) {
-    const date = new Date(dateStr);
+    // Parse as local date [avoid off-by-one error]
+    const [year, month, dayNum] = dateStr.split("-").map(Number);
+    const date = new Date(year, month - 1, dayNum);
     const monthLabel = date
       .toLocaleString("default", { month: "long", year: "numeric" })
       .toUpperCase();
@@ -48,7 +51,7 @@ export default function EventSection({
           </div>
         ) : (
           events.map((event) => {
-            //Extract date information 
+            //Extract date information
             const { monthLabel, weekday, day } = getDateParts(event.date);
             return (
               <EventCard

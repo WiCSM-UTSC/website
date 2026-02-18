@@ -26,28 +26,24 @@ export default function EventsPage() {
     async function fetchEvents() {
       setLoading(true);
       try {
-        const baseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://dummy.supabase.co";
-        const headers = { Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,};
-
-        const upcomingRes = await fetch(
-          `${baseUrl}/functions/v1/events/upcoming`,
-          { headers }
-        );
-
-        const pastRes = await fetch(
-          `${baseUrl}/functions/v1/events/past`,
-          { headers }
-        );
-
-        const upcomingData = await upcomingRes.json();
-        const pastData = await pastRes.json();
-
-        setUpcomingEvents(upcomingData.events || []);
-        setPastEvents(pastData.events || []);
-
+        const res = await fetch("/api/events");
+        // console.log("/api/events response status:", res.status);
+        const text = await res.text();
+        // console.log("/api/events raw response:", text);
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (parseErr) {
+          console.log("Failed to parse JSON:", parseErr);
+          setUpcomingEvents([]);
+          setPastEvents([]);
+          return;
+        }
+        // console.log("Parsed events data:", data);
+        setUpcomingEvents(data.upcoming || []);
+        setPastEvents(data.past || []);
       } catch (err) {
-        // handle error
-        console.log(err);
+        // console.log("fetchEvents error:", err);
         setUpcomingEvents([]);
         setPastEvents([]);
       } finally {

@@ -2,6 +2,7 @@ import React from "react";
 import "./EventCard.css";
 
 type EventCardProps = {
+  id: string;  // id is needed for redirect to event-specfic page
   monthLabel: string;
   weekday: string;
   day: string;
@@ -15,6 +16,7 @@ type EventCardProps = {
 
 
 function EventCard({
+  id,
   monthLabel,
   weekday,
   day,

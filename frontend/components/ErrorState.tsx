@@ -29,14 +29,7 @@ function ErrorState({
       </svg>
       <span className="text-lg text-gray-700 font-medium mb-2">{message}</span>
       <span className="text-sm text-gray-500 mb-6">{subtitle}</span>
-      {onRetry && (
-        <button
-          className="px-6 py-3 bg-[#513C97] text-white rounded-full font-medium hover:bg-[#3a296b] transition-all shadow-md hover:shadow-lg"
-          onClick={onRetry}
-        >
-          {retryLabel}
-        </button>
-      )}
+      
     </div>
   );
 }

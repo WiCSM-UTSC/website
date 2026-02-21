@@ -1,22 +1,23 @@
 "use client";
-import EventCard from "./EventCard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ErrorState from "@/components/ErrorState";
 import EventSection from "./EventSection";
 import { useEffect, useState } from "react";
+import type { Event, EventsApiResponse } from "./types";
 
-type Event = {
-  id: string;
-  title: string;
-  description: string | null;
-  date: string;
-  start_time: string | null;
-  end_time: string | null;
-  location: string | null;
-  image_url: string | null;
-  signup_url: string | null;
-};
+async function fetchEventBucket(endpoint: string): Promise<EventsApiResponse> {
+  const response = await fetch(endpoint);
+  const data = (await response
+    .json()
+    .catch(() => null)) as EventsApiResponse | null;
+
+  if (!response.ok || !data) {
+    throw new Error("Failed to fetch events");
+  }
+
+  return data;
+}
 
 export default function EventsPage() {
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
@@ -29,29 +30,20 @@ export default function EventsPage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch("/api/events");
-        const text = await res.text();
-        let data;
-        try {
-          data = JSON.parse(text);
-        } catch (parseErr) {
-          setError(
-            "Unable to load events at this time. Please try again later.",
-          );
-          setUpcomingEvents([]);
-          setPastEvents([]);
-          setLoading(false);
-          return;
-        }
-        if (!res.ok || data.error) {
+        const [upcomingData, pastData] = await Promise.all([
+          fetchEventBucket("/api/events/upcoming"),
+          fetchEventBucket("/api/events/past"),
+        ]);
+
+        if (upcomingData.error || pastData.error) {
           setError(
             "Unable to load events at this time. Please try again later.",
           );
           setUpcomingEvents([]);
           setPastEvents([]);
         } else {
-          setUpcomingEvents(data.upcoming || []);
-          setPastEvents(data.past || []);
+          setUpcomingEvents(upcomingData.events || []);
+          setPastEvents(pastData.events || []);
         }
       } catch (err) {
         setError("Unable to load events at this time. Please try again later.");

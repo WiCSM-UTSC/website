@@ -15,7 +15,7 @@ This is an organizational website built with **Next.js 16 (App Router)**, **Reac
 ### Formatting & Style
 
 - Use **2-space indentation**, trailing commas, and double quotes for JSX/TSX attributes.
-- Follow the existing ESLint config (`eslint.config.mjs`). Do not add rules that conflict.
+- Follow the existing ESLint config (`frontend/eslint.config.mjs`). Do not add rules that conflict.
 
 ### Commenting Conventions
 

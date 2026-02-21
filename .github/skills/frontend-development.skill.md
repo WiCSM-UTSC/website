@@ -9,7 +9,7 @@ This project's frontend uses **Next.js 16 (App Router)**, **React 19**, **TypeSc
 
 1. Pages live in `frontend/app/`. Server Components are the default; only add `"use client"` when the component requires hooks, event handlers, browser APIs, or Framer Motion.
 2. Shared, reusable UI components live in `frontend/components/`. Feature-specific components are co-located inside their route folder (e.g., `app/events/EventCard.tsx`).
-3. Pages and server components fetch data from internal API routes (`/api/*`). Client components receive data as props or use custom hooks—**never import from `app/api/` directly**.
+3. Pages and server components should fetch data using the project's documented backend HTTP APIs or shared data-access utilities (for example, via `fetch` in Server Components). Client components receive data as props or via custom hooks; avoid importing server-only code directly into client components.
 4. Use Tailwind CSS utility classes for styling. Scoped CSS files (e.g., `EventCard.css`) are acceptable for complex component styles. Avoid inline `style` objects.
 
 ## TypeScript

@@ -9,8 +9,6 @@ type ErrorStateProps = {
 function ErrorState({
   message = "Unable to load content at this time. Please try again later!",
   subtitle = "Something went wrong on our end :(",
-  onRetry,
-  retryLabel = "Try Again",
 }: ErrorStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16 bg-white/60 rounded-2xl shadow-sm">

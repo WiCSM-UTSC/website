@@ -1,4 +1,4 @@
-## applyTo: "frontend/\*_/_.{ts,tsx,jsx,css}"
+## applyTo: "frontend/**/*.{ts,tsx,jsx,css}"
 
 # Frontend Agent – WiCSM Website
 

@@ -45,7 +45,7 @@ export default function EventsPage() {
           setUpcomingEvents(upcomingData.events || []);
           setPastEvents(pastData.events || []);
         }
-      } catch (err) {
+      } catch (_err) {
         setError("Unable to load events at this time. Please try again later.");
         setUpcomingEvents([]);
         setPastEvents([]);

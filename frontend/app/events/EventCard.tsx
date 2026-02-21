@@ -16,7 +16,7 @@ type EventCardProps = {
 
 
 function EventCard({
-  id,
+  _id, //destructure for now (prevent warnings)
   monthLabel,
   weekday,
   day,
@@ -26,7 +26,7 @@ function EventCard({
   posterSrc,
   posterAlt,
   titleLink,
-}: EventSectionProps) {
+}: EventCardProps) {
   return (
     <div className="event-card">
       {/* Top month header */}

@@ -34,8 +34,8 @@ export async function GET() {
       {
         upcoming: upcomingResult.events || [],
         past: pastResult.events || [],
-        upcomingDebug: upcomingResult.debug,
-        pastDebug: pastResult.debug,
+        // upcomingDebug: upcomingResult.debug,
+        // pastDebug: pastResult.debug,
         error: upcomingResult.error || pastResult.error,
       },
       { status: hasError ? 500 : 200 },

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Event } from "./types";
 import EventCard from "./EventCard";
 import { FaRegCalendarAlt } from "react-icons/fa";
@@ -110,6 +110,7 @@ export default function EventSection({
                     return (
                       <EventCard
                         key={event.id}
+                        id={event.id}
                         monthLabel={monthLabel}
                         weekday={weekday}
                         day={day}

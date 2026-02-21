@@ -28,7 +28,7 @@ export async function GET() {
     return NextResponse.json(
       {
         events: result.events || [],
-        debug: result.debug,
+        // debug: result.debug,
         error: result.error,
       },
       { status: result.ok ? 200 : result.status },

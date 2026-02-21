@@ -1,4 +1,4 @@
-## applyTo: "frontend/app/api/\*_/_.ts"
+## applyTo: "frontend/app/api/**/*.ts"
 
 # API Agent – WiCSM Website
 

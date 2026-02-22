@@ -1,9 +1,46 @@
 'use client';
 import { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function AdminLoginCard() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const res = await fetch('/api/admin-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || 'Login failed');
+        return;
+      }
+
+      // Save the session token for use in future admin requests
+      localStorage.setItem('admin_session', JSON.stringify(data));
+
+      // Redirect to admin dashboard
+      router.push('/admin/dashboard');
+    } catch {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div
@@ -20,17 +57,25 @@ export default function AdminLoginCard() {
       <h2 className="text-2xl md:text-3xl font-bold" style={{ color: '#390D67' }}>
         Admin Login
       </h2>
-      
-      <form className="space-y-4 md:space-y-6">
+
+      {/* Shows error message if login fails */}
+      {error && (
+        <p className="text-red-500 text-sm -mb-2">{error}</p>
+      )}
+
+      <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
         <div className="relative">
           <div className="absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
             <Mail className="w-5 h-5" style={{ color: '#9CA3AF' }} />
           </div>
           <input
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-300"
             placeholder="Email"
             style={{ color: '#6B7280', background: '#FFFFFF' }}
+            required
           />
         </div>
 
@@ -40,9 +85,12 @@ export default function AdminLoginCard() {
           </div>
           <input
             type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full pl-12 pr-12 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-300"
             placeholder="Password"
             style={{ color: '#6B7280', background: '#FFFFFF' }}
+            required
           />
           <button
             type="button"
@@ -50,20 +98,17 @@ export default function AdminLoginCard() {
             className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:opacity-70 transition-opacity"
             style={{ color: '#9CA3AF' }}
           >
-            {showPassword ? (
-              <EyeOff className="w-5 h-5" />
-            ) : (
-              <Eye className="w-5 h-5" />
-            )}
+            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </button>
         </div>
 
         <button
           type="submit"
-          className="w-full py-3 rounded-lg font-bold text-white transition-opacity hover:opacity-90"
+          disabled={loading}
+          className="w-full py-3 rounded-lg font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
           style={{ background: '#54528F' }}
         >
-          Sign in
+          {loading ? 'Signing in...' : 'Sign in'}
         </button>
       </form>
     </div>

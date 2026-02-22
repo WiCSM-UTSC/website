@@ -173,7 +173,7 @@ export default function ExecutiveSection() {
                     Executive Team
                 </SectionHeader>
 
-                <p className="max-w-2xl mx-auto text-4xl font-bold mb-20 [color:#513c97]">
+                <p className="max-w-2xl mx-auto text-4xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-20 [color:#513c97]">
                     Meet the amazing people at WiCSM!
                 </p>
 
@@ -189,7 +189,7 @@ export default function ExecutiveSection() {
 
                     return (
                         <div key={team.title} className="mb-20 flex flex-col items-center">
-                            <h3 className="text-5xl font-bold mb-12 [color:#513c97]">
+                            <h3 className="text-5xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-12 [color:#513c97]">
                                 {team.title}
                             </h3>
 

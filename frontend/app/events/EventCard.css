@@ -1,0 +1,158 @@
+.event-card {
+  padding: 24px 40px;
+  font-family: "DM Sans", sans-serif;
+  color: #1a1a2e;
+  border-radius: 8px;
+}
+
+/* Top header */
+.event-card__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  width: max-content; /* <<< MAGIC: keeps header only as wide as month+line */
+}
+
+@media (max-width: 768px) {
+  .event-card__header {
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+}
+
+.event-card__divider {
+  width: 900px; /* <<< short line length */
+  height: 1.5px;
+  background-color: #54528f;
+}
+
+.event-card__month-label {
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #54528f;
+  font-weight: 700;
+  font-family: "DM Sans", sans-serif;
+}
+
+/* Main row */
+.event-card__body {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+/* On small screens, make it column layout */
+@media (max-width: 768px) {
+  .event-card__body {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+/* Date column */
+.event-card__date-col {
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+/* On small screens, move date to header inline */
+@media (max-width: 768px) {
+  .event-card__date-col {
+    display: none;
+  }
+}
+
+.event-card__weekday {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: #54528f;
+  font-weight: 500;
+}
+
+.event-card__day {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+/* Text section */
+.event-card__content {
+  flex: 1;
+  max-width: 600px;
+}
+
+.event-card__meta {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.event-card__title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #54528f;
+  transition: opacity 0.2s ease;
+}
+
+.event-card__title:hover {
+  opacity: 0.8;
+}
+
+.event-card__description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #374151;
+}
+
+/* Poster */
+.event-card__poster {
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.event-card__poster img {
+  display: block;
+  width: 260px;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Responsive poster sizing */
+@media (max-width: 1024px) {
+  .event-card__poster img {
+    width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .event-card__poster {
+    justify-content: center;
+    width: 100%;
+  }
+  .event-card__poster img {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+.event-card__title--link {
+  text-decoration: none;
+  color: #54528f;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.event-card__title--link:hover {
+  opacity: 0.8;
+}

@@ -27,7 +27,7 @@ export default function ConfirmDeleteModal({ isOpen, onClose, onConfirm, itemCou
                     Are you sure?
                 </h2>
                 <p className="text-sm text-gray-500 text-center mb-6">
-                    Once deleted, the process cannot be undone.
+                    Once deleted, {itemCount === 1 ? "this item" : `${itemCount} items`} cannot be undone.
                 </p>
 
                 {/* Actions */}

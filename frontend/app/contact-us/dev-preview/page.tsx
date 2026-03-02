@@ -1,8 +1,8 @@
 import Navbar from '@/components/Navbar';
-import ContactHeader from './ContactHeader';
-import GetInTouchSection from './GetInTouchSection';
-import MapSection from './MapSection';
-import JoinUsSection from './JoinUsSection';
+import ContactHeader from '@/components/ContactHeader';
+import GetInTouchSection from '@/components/GetInTouchSection';
+import MapSection from '@/components/MapSection';
+import JoinUsSection from '@/components/JoinUsSection';
 import Footer from '@/components/Footer';
 
 export default function ContactUsPage() {

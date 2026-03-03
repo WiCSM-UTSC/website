@@ -1,8 +1,9 @@
 import React from "react";
+import Image from "next/image";
 import "./EventCard.css";
 
 type EventCardProps = {
-  id: string;  // id is needed for redirect to event-specfic page
+  id: string; // id is needed for redirect to event-specfic page
   monthLabel: string;
   weekday: string;
   day: string;
@@ -11,12 +12,11 @@ type EventCardProps = {
   description: string;
   posterSrc?: string;
   posterAlt?: string;
-  titleLink?: string;   
+  titleLink?: string;
 };
 
-
 function EventCard({
-  _id, //destructure for now (prevent warnings)
+  id,
   monthLabel,
   weekday,
   day,
@@ -27,6 +27,7 @@ function EventCard({
   posterAlt,
   titleLink,
 }: EventCardProps) {
+  void id;
   return (
     <div className="event-card">
       {/* Top month header */}
@@ -66,12 +67,19 @@ function EventCard({
         {/* Poster on the right (optional) */}
         {posterSrc && (
           <div className="event-card__poster">
-            <img src={posterSrc} alt={posterAlt || "Event poster"} />
+            <Image
+              src={posterSrc}
+              alt={posterAlt || "Event poster"}
+              width={260}
+              height={160}
+              className="event-card__poster-image"
+              unoptimized
+            />
           </div>
         )}
       </div>
     </div>
   );
-};
+}
 
 export default EventCard;

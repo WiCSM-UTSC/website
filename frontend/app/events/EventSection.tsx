@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Event } from "./types";
 import EventCard from "./EventCard";
 import { FaRegCalendarAlt } from "react-icons/fa";
@@ -31,11 +31,12 @@ export default function EventSection({
   const [pageDirection, setPageDirection] = useState(1);
   const shouldReduceMotion = useReducedMotion();
   const totalPages = getTotalPages(events, EVENTS_PER_PAGE);
-  const paginatedEvents = getPaginatedEvents(events, page, EVENTS_PER_PAGE);
-
-  useEffect(() => {
-    setPage((prevPage) => Math.min(prevPage, totalPages));
-  }, [totalPages]);
+  const currentPage = Math.min(page, totalPages);
+  const paginatedEvents = getPaginatedEvents(
+    events,
+    currentPage,
+    EVENTS_PER_PAGE,
+  );
 
   const pageAnimationVariants = {
     enter: (direction: number) => ({
@@ -53,11 +54,11 @@ export default function EventSection({
   };
 
   function updatePage(nextPage: number) {
-    if (nextPage < 1 || nextPage > totalPages || nextPage === page) {
+    if (nextPage < 1 || nextPage > totalPages || nextPage === currentPage) {
       return;
     }
 
-    setPageDirection(nextPage > page ? 1 : -1);
+    setPageDirection(nextPage > currentPage ? 1 : -1);
     setPage(nextPage);
   }
 
@@ -90,7 +91,7 @@ export default function EventSection({
                 initial={false}
               >
                 <m.div
-                  key={`${isCurrent ? "current" : "past"}-${page}`}
+                  key={`${isCurrent ? "current" : "past"}-${currentPage}`}
                   className="flex flex-col gap-10"
                   custom={pageDirection}
                   variants={pageAnimationVariants}
@@ -134,8 +135,8 @@ export default function EventSection({
             {totalPages > 1 && (
               <div className="flex items-center justify-center gap-2 pt-2">
                 <button
-                  disabled={page <= 1}
-                  onClick={() => updatePage(page - 1)}
+                  disabled={currentPage <= 1}
+                  onClick={() => updatePage(currentPage - 1)}
                   className="px-4 py-2 text-sm font-medium rounded-lg border border-[#D9D8F0] text-[#513C97] enabled:hover:bg-[#F2EEFF] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   Previous
@@ -147,7 +148,7 @@ export default function EventSection({
                       key={num}
                       onClick={() => updatePage(num)}
                       className={`w-9 h-9 text-sm font-semibold rounded-lg transition-colors ${
-                        num === page
+                        num === currentPage
                           ? "bg-[#513C97] text-white"
                           : "text-[#513C97] border border-[#D9D8F0] hover:bg-[#F2EEFF]"
                       }`}
@@ -158,8 +159,8 @@ export default function EventSection({
                 )}
 
                 <button
-                  disabled={page >= totalPages}
-                  onClick={() => updatePage(page + 1)}
+                  disabled={currentPage >= totalPages}
+                  onClick={() => updatePage(currentPage + 1)}
                   className="px-4 py-2 text-sm font-medium rounded-lg border border-[#D9D8F0] text-[#513C97] enabled:hover:bg-[#F2EEFF] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   Next

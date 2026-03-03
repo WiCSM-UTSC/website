@@ -17,9 +17,6 @@ import {
   type SupabaseCredentials,
 } from "../utils/supabase";
 
-const EVENT_SELECT_FIELDS =
-  "id,title,description,date,start_time,end_time,location,image_url,signup_url,created_at,updated_at";
-
 type EventsTimeline = "upcoming" | "past";
 
 /**

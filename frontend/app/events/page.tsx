@@ -45,7 +45,7 @@ export default function EventsPage() {
           setUpcomingEvents(upcomingData.events || []);
           setPastEvents(pastData.events || []);
         }
-      } catch (_err) {
+      } catch {
         setError("Unable to load events at this time. Please try again later.");
         setUpcomingEvents([]);
         setPastEvents([]);
@@ -69,10 +69,7 @@ export default function EventsPage() {
           </p>
         </header>
         {error ? (
-          <ErrorState
-            message={error}
-            onRetry={() => window.location.reload()}
-          />
+          <ErrorState message={error} />
         ) : (
           <>
             <EventSection

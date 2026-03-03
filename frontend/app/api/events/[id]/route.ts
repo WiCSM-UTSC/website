@@ -6,7 +6,7 @@
  * - Reads the id from route params and fetches a single record.
  * - Returns 404 when the event is not found.
  */
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { fetchEventById } from "../service";
 import {
   getSupabaseCredentials,
@@ -14,13 +14,14 @@ import {
 } from "../../utils/supabase";
 
 type RouteContext = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export async function GET(_request: Request, { params }: RouteContext) {
+export async function GET(_request: NextRequest, context: RouteContext) {
   try {
+    const params = await context.params;
     const credentials = getSupabaseCredentials();
 
     if (hasMissingServiceCredentials(credentials)) {

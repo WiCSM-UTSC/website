@@ -1,9 +1,6 @@
-
 type ErrorStateProps = {
   message?: string;
   subtitle?: string;
-  onRetry?: () => void;
-  retryLabel?: string;
 };
 
 function ErrorState({
@@ -27,7 +24,6 @@ function ErrorState({
       </svg>
       <span className="text-lg text-gray-700 font-medium mb-2">{message}</span>
       <span className="text-sm text-gray-500 mb-6">{subtitle}</span>
-      
     </div>
   );
 }

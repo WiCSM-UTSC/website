@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { AdminLayout, ExecutivesTable } from "@/components/admin";
 
 const mockExecutives = [
@@ -29,6 +29,7 @@ const mockExecutives = [
 
 export default function ManageExecutivesPage() {
     const [executives, setExecutives] = useState(mockExecutives);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const handleAddExecutive = () => {
         const newExec = {
@@ -53,10 +54,22 @@ export default function ManageExecutivesPage() {
         setExecutives(executives.filter((exec) => !ids.includes(exec.id)));
     };
 
+    const filteredExecutives = useMemo(() => {
+        if (!searchQuery.trim()) return executives;
+        const q = searchQuery.trim().toLowerCase();
+        return executives.filter((exec) =>
+            (exec.name ?? "").toLowerCase().startsWith(q)
+        );
+    }, [executives, searchQuery]);
+
     return (
-        <AdminLayout user={{ name: "Rachel" }}>
+        <AdminLayout
+            user={{ name: "Rachel" }}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+        >
             <ExecutivesTable
-                executives={executives}
+                executives={filteredExecutives}
                 onAddExecutive={handleAddExecutive}
                 onUpdateExecutive={handleUpdateExecutive}
                 onDeleteExecutives={handleDeleteExecutives}

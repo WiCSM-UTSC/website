@@ -63,10 +63,10 @@ export default function FlipCard({
                                 </div>
                             )}
                             <div className="absolute bottom-4 left-0 right-0 text-center">
-                                <p className="text-3xl font-black [filter:drop-shadow(0_0_3px_rgba(230,220,250,0.9))]">
+                                <p className="text-3xl font-black text-black [filter:drop-shadow(0_0_3px_rgba(230,220,250,0.9))]">
                                     {name}
                                 </p>
-                                <p className="text-3xl font-black [filter:drop-shadow(0_0_3px_rgba(230,220,250,0.9))]">
+                                <p className="text-3xl font-black text-black [filter:drop-shadow(0_0_3px_rgba(230,220,250,0.9))]">
                                     {position}
                                 </p>
                             </div>
@@ -85,7 +85,7 @@ export default function FlipCard({
                         }}
                     >
 
-                        <p className="text-lg font-bold text-center leading-relaxed">
+                        <p className="text-lg font-bold text-black text-center leading-relaxed">
                             {description}
                         </p>
                     </div>

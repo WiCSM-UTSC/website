@@ -33,6 +33,13 @@ This project's frontend uses **Next.js 16 (App Router)**, **React 19**, **TypeSc
 3. Provide `aria-label` or `aria-labelledby` on icon-only buttons and non-text content.
 4. Respect `prefers-reduced-motion` (Framer Motion's `useReducedMotion` is already in use).
 
+## Design Guidelines
+
+1. **Creative freedom**: If no specific design direction is provided, you have creative latitude—but your designs must feel consistent with the existing website's visual language (colours, typography, spacing, component patterns). Explore the current pages for reference before introducing new styles.
+2. **Responsiveness**: Every UI change must be fully responsive across all screen sizes (mobile, tablet, desktop). Use Tailwind's responsive prefixes (`sm:`, `md:`, `lg:`, `xl:`) and test layouts at each breakpoint.
+3. **Figma specs take priority**: When a Figma link is supplied, follow it precisely—spacing, colours, typography, component structure, and interaction states should all match the provided design.
+4. **No generic AI/vibe-coded aesthetics**: Avoid designs characterised by heavy purplish/blue-purple gradients, excessive glassmorphism, oversized rounded corners, or other trendy but context-free visual treatments—unless those patterns are already established in the current site design.
+
 ## Refactoring & Decoupling
 
 1. Identify duplicated TSX patterns and extract them into shared components under `components/`.

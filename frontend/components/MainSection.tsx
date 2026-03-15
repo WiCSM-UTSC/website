@@ -4,8 +4,8 @@ export default function MainSection() {
   const photos = ["/photo1.png", "/photo2.png", "/photo3.png"];
 
   return (
-    <section className="w-full bg-white dark:bg-zinc-900 py-20 px-6">
-      <div className="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-10">
+    <section className="w-full min-h-screen bg-white dark:bg-zinc-900 py-20 px-6">
+      <div className="mx-auto w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-10">
 
         {/* Left Text Section */}
         <div className="flex flex-col gap-4 text-center md:text-left">

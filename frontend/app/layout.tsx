@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const dmSans = DM_Sans({
   variable: "--font-geist-sans",
@@ -22,7 +22,7 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -36,5 +36,5 @@ export default function RootLayout({
         <Footer />
       </body>
     </html>
-  )
+  );
 }

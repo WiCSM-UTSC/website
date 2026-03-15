@@ -1,25 +1,66 @@
+import { useState } from "react";
+import type { Event } from "./types";
 import EventCard from "./EventCard";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import {
+  AnimatePresence,
+  LazyMotion,
+  domAnimation,
+  m,
+  useReducedMotion,
+} from "framer-motion";
+import {
+  EVENTS_PER_PAGE,
+  getDateParts,
+  getPaginatedEvents,
+  getTotalPages,
+} from "./utils";
 
-type eventSectionProp = { 
-  isCurrent: Boolean; 
-}
+type EventSectionProps = {
+  isCurrent: boolean;
+  events: Event[];
+  loading?: boolean;
+};
 
-//TODO: Add list into prop for events that will be passed down into page 
+export default function EventSection({
+  isCurrent,
+  events,
+  loading,
+}: EventSectionProps) {
+  const [page, setPage] = useState(1);
+  const [pageDirection, setPageDirection] = useState(1);
+  const shouldReduceMotion = useReducedMotion();
+  const totalPages = getTotalPages(events, EVENTS_PER_PAGE);
+  const currentPage = Math.min(page, totalPages);
+  const paginatedEvents = getPaginatedEvents(
+    events,
+    currentPage,
+    EVENTS_PER_PAGE,
+  );
 
-export default function EventSection({ isCurrent }: eventSectionProp) {
-  const events = [
-    {
-      monthLabel: "SEPTEMBER 2025",
-      weekday: "MON",
-      day: "25",
-      meta: "September 25 Location: IC Atrium @ 3:00 pm - 8:00 pm",
-      title:
-        "Antimicrobial Resistance Across Canada: Youth Leading Change in Policy and Practice",
-      description:
-        "Join SCWIST, CanAMR Net, and EPIC on November 17 during National AMR Week for a special event hosted. Learn how to think like a recruiter with WiCSM x Bell! Listen to and network with a panel of tech professionals.",
-      posterSrc: "/globe.svg",
+  const pageAnimationVariants = {
+    enter: (direction: number) => ({
+      opacity: 0,
+      x: shouldReduceMotion ? 0 : direction * 20,
+    }),
+    center: {
+      opacity: 1,
+      x: 0,
     },
-  ];
+    exit: (direction: number) => ({
+      opacity: 0,
+      x: shouldReduceMotion ? 0 : direction * -20,
+    }),
+  };
+
+  function updatePage(nextPage: number) {
+    if (nextPage < 1 || nextPage > totalPages || nextPage === currentPage) {
+      return;
+    }
+
+    setPageDirection(nextPage > currentPage ? 1 : -1);
+    setPage(nextPage);
+  }
 
   return (
     <section className="mb-16">
@@ -27,37 +68,107 @@ export default function EventSection({ isCurrent }: eventSectionProp) {
         {isCurrent ? "Current Events" : "Past Events"}
       </h2>
       <div className="flex flex-col gap-10">
-        {/* UNCOMMENT WHEN INTEGRATING API INTO EVENTS */}
-        {/* {currentEvents.map((events) => (
-              <EventCard key={event.id} event={event} isCurrent={true} />
-            ))} */}
-        <EventCard
-          monthLabel="SEPTEMBER 2025"
-          weekday="MON"
-          day="25"
-          meta="September 25 Location: IC Atrium @ 3:00 pm - 8:00 pm"
-          title="Antimicrobial Resistance Across Canada: Youth Leading Change in Policy and Practice"
-          description="Join SCWIST, CanAMR Net, and EPIC on November 17 during National AMR Week for a special event hosted. Learn how to think like a recruiter with WiCSM x Bell! Listen to and network with a panel of tech professionals."
-          posterSrc="/globe.svg"
-        />
-        <EventCard
-          monthLabel="SEPTEMBER 2025"
-          weekday="MON"
-          day="25"
-          meta="September 25 Location: IC Atrium @ 3:00 pm - 8:00 pm"
-          title="Antimicrobial Resistance Across Canada: Youth Leading Change in Policy and Practice"
-          description="Join SCWIST, CanAMR Net, and EPIC on November 17 during National AMR Week for a special event hosted. Learn how to think like a recruiter with WiCSM x Bell! Listen to and network with a panel of tech professionals."
-          posterSrc="/globe.svg"
-        />
-        <EventCard
-          monthLabel="SEPTEMBER 2025"
-          weekday="MON"
-          day="25"
-          meta="September 25 Location: IC Atrium @ 3:00 pm - 8:00 pm"
-          title="Antimicrobial Resistance Across Canada: Youth Leading Change in Policy and Practice"
-          description="Join SCWIST, CanAMR Net, and EPIC on November 17 during National AMR Week for a special event hosted. Learn how to think like a recruiter with WiCSM x Bell! Listen to and network with a panel of tech professionals."
-          posterSrc="/globe.svg"
-        />
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <span className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#513C97] mr-4"></span>
+            <span className="text-lg text-[#513C97] font-medium">
+              Loading events...
+            </span>
+          </div>
+        ) : events.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12">
+            <FaRegCalendarAlt size={48} className="mb-2 text-[#513C97]" />
+            <span className="text-lg text-[#513C97] font-medium">
+              No events found.
+            </span>
+          </div>
+        ) : (
+          <>
+            <LazyMotion features={domAnimation}>
+              <AnimatePresence
+                custom={pageDirection}
+                mode="wait"
+                initial={false}
+              >
+                <m.div
+                  key={`${isCurrent ? "current" : "past"}-${currentPage}`}
+                  className="flex flex-col gap-10"
+                  custom={pageDirection}
+                  variants={pageAnimationVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    duration: shouldReduceMotion ? 0.12 : 0.26,
+                    ease: "easeOut",
+                  }}
+                >
+                  {paginatedEvents.map((event) => {
+                    const { monthLabel, weekday, day } = getDateParts(
+                      event.date,
+                    );
+
+                    return (
+                      <EventCard
+                        key={event.id}
+                        id={event.id}
+                        monthLabel={monthLabel}
+                        weekday={weekday}
+                        day={day}
+                        meta={
+                          event.location
+                            ? `${event.date} Location: ${event.location}`
+                            : event.date
+                        }
+                        title={event.title}
+                        description={event.description || ""}
+                        posterSrc={event.image_url || "/globe.svg"}
+                        titleLink={event.signup_url || undefined}
+                      />
+                    );
+                  })}
+                </m.div>
+              </AnimatePresence>
+            </LazyMotion>
+
+            {/* Pagination controls — only shown when more than one page */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 pt-2">
+                <button
+                  disabled={currentPage <= 1}
+                  onClick={() => updatePage(currentPage - 1)}
+                  className="px-4 py-2 text-sm font-medium rounded-lg border border-[#D9D8F0] text-[#513C97] enabled:hover:bg-[#F2EEFF] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                >
+                  Previous
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (num) => (
+                    <button
+                      key={num}
+                      onClick={() => updatePage(num)}
+                      className={`w-9 h-9 text-sm font-semibold rounded-lg transition-colors ${
+                        num === currentPage
+                          ? "bg-[#513C97] text-white"
+                          : "text-[#513C97] border border-[#D9D8F0] hover:bg-[#F2EEFF]"
+                      }`}
+                    >
+                      {num}
+                    </button>
+                  ),
+                )}
+
+                <button
+                  disabled={currentPage >= totalPages}
+                  onClick={() => updatePage(currentPage + 1)}
+                  className="px-4 py-2 text-sm font-medium rounded-lg border border-[#D9D8F0] text-[#513C97] enabled:hover:bg-[#F2EEFF] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </section>
   );

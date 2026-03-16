@@ -3,12 +3,13 @@ import SectionHeader from "./SectionHeader";
 
 export default function SupportMissionSection() {
   return (
-    <section className="py-32 px-24 bg-[#ece7fa]">
+    <section className="relative py-32 px-24 bg-[#ece7fa]">
       <div className="flex-col md:flex-row flex items-center justify-between gap-24">
-
         {/* LEFT: Image / placeholder */}
-        <div className="w-[250px] h-[250px] md:w-[360px] md:h-[360px] rounded-3xl 
-                        bg-white shadow-[0_0_40px_rgba(155,147,232,0.6)] shrink-0" />
+        <div
+          className="w-[250px] h-[250px] md:w-[360px] md:h-[360px] rounded-3xl 
+                        bg-white shadow-[0_0_40px_rgba(155,147,232,0.6)] shrink-0"
+        />
 
         {/* RIGHT: Text + CTA */}
         <div className="max-w-xl">
@@ -37,8 +38,14 @@ export default function SupportMissionSection() {
             Contact us
           </button>
         </div>
-
       </div>
+
+      {/* subtle gradient that fades this section to white at the bottom*/}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-0 right-0 bottom-0 h-24"
+        style={{ background: "linear-gradient(to bottom, #ece7fa, #ffffff)" }}
+      />
     </section>
   );
 }

@@ -10,9 +10,9 @@ import SupportMissionSection from "../components/SupportMissionSection";
 
 export default function Home() {
   return (
-    <>
+    <div className="min-h-screen pt-12">
       <Navbar />
-
+    <main>
       <MainSection />
       <WhoSection />
 
@@ -24,8 +24,9 @@ export default function Home() {
 
       <NextEventSection />
       <SupportMissionSection />
+      </main>
 
       <Footer />
-    </>
+    </div>
   );
 }

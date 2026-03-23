@@ -3,6 +3,26 @@
 import { useState } from "react";
 import Image from "next/image";
 
+function PersonPlaceholder() {
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-start pt-8 px-6 pb-24">
+      <div className="relative w-full [height:28rem] bg-[#E8E0F7] rounded-2xl flex items-center justify-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 100 100"
+          className="w-40 h-40"
+          fill="none"
+        >
+          {/* Head */}
+          <circle cx="50" cy="32" r="18" fill="#7c4dbb" opacity="0.85" />
+          {/* Body */}
+          <ellipse cx="50" cy="78" rx="28" ry="22" fill="#7c4dbb" opacity="0.85" />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
 export default function FlipCard({ name, position, description, imageUrl }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -23,9 +43,7 @@ export default function FlipCard({ name, position, description, imageUrl }) {
     >
       <div
         className="w-83 [height:25rem] rounded-1xl"
-        style={{
-          perspective: "1000px",
-        }}
+        style={{ perspective: "1000px" }}
       >
         <div
           className="relative w-full h-full rounded-2xl"
@@ -42,7 +60,7 @@ export default function FlipCard({ name, position, description, imageUrl }) {
             }}
           >
             <div className="h-full w-full overflow-hidden rounded-2xl">
-              {imageUrl && (
+              {imageUrl ? (
                 <div className="absolute inset-0 flex flex-col items-center justify-start pt-8 px-6 pb-24">
                   <div className="relative w-full [height:28rem]">
                     <Image
@@ -53,12 +71,15 @@ export default function FlipCard({ name, position, description, imageUrl }) {
                     />
                   </div>
                 </div>
+              ) : (
+                <PersonPlaceholder />
               )}
-              <div className="absolute bottom-4 left-0 right-0 text-center">
-                <p className="text-3xl font-black text-black [filter:drop-shadow(0_0_3px_rgba(230,220,250,0.9))]">
+
+              <div className="absolute bottom-6 left-0 right-0 text-center px-4">
+                <p className="text-xl font-black text-black [filter:drop-shadow(0_0_3px_rgba(230,220,250,0.9))] truncate">
                   {name}
                 </p>
-                <p className="text-3xl font-black text-black [filter:drop-shadow(0_0_3px_rgba(230,220,250,0.9))]">
+                <p className="text-xl font-black text-black [filter:drop-shadow(0_0_3px_rgba(230,220,250,0.9))] truncate">
                   {position}
                 </p>
               </div>

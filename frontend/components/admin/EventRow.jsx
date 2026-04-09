@@ -22,15 +22,15 @@ export default function EventRow({
                     className="w-5 h-5 rounded border-[#D5D0E5] text-[#513C97] focus:ring-[#513C97]"
                 />
             </td>
-            <td className="py-3 md:py-4 px-3 md:px-5 text-base md:text-lg text-[#513C97]">
+            <td className="py-3 md:py-4 px-3 md:px-5 text-sm sm:text-base md:text-lg text-[#513C97] whitespace-nowrap">
                 {event.title}
             </td>
-            <td className="py-3 md:py-4 px-3 md:px-5 text-base md:text-lg text-[#513C97]">
+            <td className="py-3 md:py-4 px-3 md:px-5 text-sm sm:text-base md:text-lg text-[#513C97] whitespace-nowrap">
                 {event.date}
             </td>
             <td className="py-3 md:py-4 px-3 md:px-5">
                 <span
-                    className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                    className={`inline-block px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap ${
                         event.status === "Upcoming"
                             ? "bg-[#E8F5E9] text-[#513C97]"
                             : "bg-[#F5F5F5] text-[#513C97]"
@@ -42,10 +42,10 @@ export default function EventRow({
             <td className={`py-3 md:py-4 px-3 md:px-5 w-20 md:w-24 text-right ${isLastRow ? "rounded-br-2xl" : ""}`}>
                 <button
                     onClick={() => onEdit?.(event)}
-                    className="p-2 rounded-lg text-[#513C97] hover:bg-[#F9F7FF] transition-colors"
+                    className="p-1.5 sm:p-2 rounded-lg text-[#513C97] hover:bg-[#F9F7FF] transition-colors"
                     aria-label="Edit event"
                 >
-                    <Pencil size={20} />
+                    <Pencil size={18} className="sm:w-5 sm:h-5" />
                 </button>
             </td>
         </tr>

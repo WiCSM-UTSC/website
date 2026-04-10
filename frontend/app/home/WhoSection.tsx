@@ -1,7 +1,8 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import Image from "next/image";
-import SectionHeader from "./SectionHeader";
+import SectionHeader from "@/components/SectionHeader";
 
 const images = [
   "/who/1.jpg",
@@ -12,6 +13,23 @@ const images = [
 ];
 
 export default function WhoWeAreSection() {
+  const [failedSources, setFailedSources] = useState<Set<string>>(new Set());
+
+  //useCallback to handle image error if it fails to render. 
+  //If image url breaks or fails; then it shows a lightish purple background instead.
+  //This should be removed before prod deployment
+  const handleImageError = useCallback((src: string) => {
+    setFailedSources((prev) => {
+      if (prev.has(src)) {
+        return prev;
+      }
+
+      const next = new Set(prev);
+      next.add(src);
+      return next;
+    });
+  }, []);
+
   return (
     <section className="py-32 bg-white overflow-hidden">
       <div className="text-center mb-16">
@@ -28,19 +46,23 @@ export default function WhoWeAreSection() {
                 key={`${loopIndex}-${i}`}
                 className="
                   relative shrink-0 overflow-hidden rounded-2xl
+                  bg-[#e8e5f7]
                   min-w-[180px] h-[140px]
                   sm:min-w-[260px] sm:h-[200px]
                   md:min-w-[360px] md:h-[260px]
                 "
               >
-                <Image
-                  src={src}
-                  alt="Who we are"
-                  fill
-                  className="object-cover"
-                />
+                {!failedSources.has(src) && (
+                  <Image
+                    src={src}
+                    alt="Who we are"
+                    fill
+                    className="object-cover"
+                    onError={() => handleImageError(src)}
+                  />
+                )}
               </div>
-            ))
+            )),
           )}
         </div>
       </div>

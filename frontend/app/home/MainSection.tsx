@@ -27,7 +27,6 @@ export default function MainSection() {
           to-[#D8E9FF]
         "
     >
-      {/* TOP FADE: subtle full-width fade from white into this section */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-0 right-0 top-0 h-24 z-0"
@@ -35,6 +34,7 @@ export default function MainSection() {
           background:
             "linear-gradient(to bottom, #ffffff, rgba(255,255,255,0))",
         }}
+
       />
       {/* CONTENT */}
       <div className="relative z-10 max-w-xl text-center md:text-left order-2 md:order-1">

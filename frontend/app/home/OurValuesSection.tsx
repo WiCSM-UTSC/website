@@ -1,5 +1,6 @@
-import SectionHeader from "./SectionHeader";
-import ValueCard from "./ValueCard";
+import SectionHeader from "@/components/SectionHeader";
+import ValueCard from "@/components/ValueCard";
+import { Lightbulb, Rocket, Users } from "lucide-react";
 
 export default function OurValuesSection() {
   return (
@@ -21,41 +22,34 @@ export default function OurValuesSection() {
         }}
       />
 
-       <div className="mb-20">
-         <SectionHeader>
-           OUR VALUES
-         </SectionHeader>
-       </div>
+      <div className="mb-20">
+        <SectionHeader>OUR VALUES</SectionHeader>
+      </div>
 
-      <div className="flex flex-col items-center md:flex-row justify-center gap-12">
+      <div className="mx-auto flex w-full max-w-[980px] flex-col items-center justify-center gap-8 px-6 md:flex-row md:flex-nowrap md:gap-12">
         <ValueCard
+          icon={
+            <Users className="h-14 w-14 md:h-16 md:w-16" aria-hidden="true" />
+          }
           title="Subtitle"
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         />
         <ValueCard
+          icon={
+            <Lightbulb
+              className="h-14 w-14 md:h-16 md:w-16"
+              aria-hidden="true"
+            />
+          }
           title="Subtitle"
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         />
         <ValueCard
+          icon={
+            <Rocket className="h-14 w-14 md:h-16 md:w-16" aria-hidden="true" />
+          }
           title="Subtitle"
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        />
-
-        {/* BOTTOM FADE */}
-        <div
-          className="
-            absolute
-            bottom-0
-            left-0
-            w-full
-            h-20
-            pointer-events-none
-            z-10
-          "
-          style={{
-            background:
-              "linear-gradient(180deg, transparent 0%, rgba(155, 147, 232, 0.5) 100%)",
-          }}
         />
       </div>
 

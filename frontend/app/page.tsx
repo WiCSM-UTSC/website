@@ -1,29 +1,29 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
-import MainSection from "../components/MainSection";
-import SectionDivider from "../components/SectionDivider";
-import WhoSection from "../components/WhoSection";
-import OurValuesSection from "../components/OurValuesSection";
-import NextEventSection from "../components/NextEventSection";
-import SupportMissionSection from "../components/SupportMissionSection";
+import MainSection from "@/app/home/MainSection";
+import SectionDivider from "@/components/SectionDivider";
+import WhoSection from "@/app/home/WhoSection";
+import OurValuesSection from "@/app/home/OurValuesSection";
+import NextEventSection from "@/app/home/NextEventSection";
+import SupportMissionSection from "@/app/home/SupportMissionSection";
 
 export default function Home() {
   return (
     <div className="min-h-screen pt-12">
       <Navbar />
-    <main>
-      <MainSection />
-      <WhoSection />
+      <main>
+        <MainSection />
+        <WhoSection />
 
-      <SectionDivider direction="up" />
+        <SectionDivider direction="up" />
 
-      <OurValuesSection />
+        <OurValuesSection />
 
-      <SectionDivider direction="down" />
+        <SectionDivider direction="down" />
 
-      <NextEventSection />
-      <SupportMissionSection />
+        <NextEventSection />
+        <SupportMissionSection />
       </main>
 
       <Footer />

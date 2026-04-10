@@ -1,5 +1,4 @@
-import Image from "next/image";
-import SectionHeader from "./SectionHeader";
+import SectionHeader from "@/components/SectionHeader";
 
 export default function NextEventSection() {
   return (
@@ -12,7 +11,7 @@ export default function NextEventSection() {
     >
       <div className="relative max-w-7xl mx-auto px-24">
         {/* TITLE */}
-        <div className="mb-24">
+        <div className="mb-24 text-center">
           <SectionHeader>JOIN OUR NEXT EVENT</SectionHeader>
         </div>
 

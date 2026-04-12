@@ -3,41 +3,36 @@
 import { useEffect, useState } from "react";
 import FlipCard from "./FlipCard";
 import SectionHeader from "./SectionHeader";
+import ErrorState from "./ErrorState";
 
 async function getExecs() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/exec`, {
-        headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
-        },
-    });
+    const res = await fetch("/api/execs");
     if (!res.ok) throw new Error("Failed to fetch exec data");
     const data = await res.json();
     return data.execs;
 }
 
-
 const SECTION_CONFIG = [
-    { title: "Presidents",   indexes: [[0, 1]] },
-    { title: "Marketing",    indexes: [[2, 5]] },
-    { title: "Finance",      indexes: [[6, 7]] },
-    { title: "Events",       indexes: [[8, 11]] },
-    { title: "Corporations", indexes: [[12, 14]] },
-    { title: "Mentorship",   indexes: [[15, 17]] },
-    { title: "First Years",  indexes: [[18, 20]] },
+    { title: "Presidents",   orderIndexes: [[1, 2]] },
+    { title: "Marketing",    orderIndexes: [[3, 11]] },
+    { title: "Events",       orderIndexes: [[12, 15]] },
+    { title: "Corporations", orderIndexes: [[16, 18]] },
+    { title: "Mentorship",   orderIndexes: [[19, 20]] },
+    { title: "Finance",      orderIndexes: [[21, 21]] },
 ];
 
-function indexInRanges(index, ranges) {
-    return ranges.some(([start, end]) => index >= start && index <= end);
+function orderIndexInRanges(orderIndex, ranges) {
+    return ranges.some(([start, end]) => orderIndex >= start && orderIndex <= end);
 }
 
 function groupExecs(execs) {
-    const assignedIndexes = new Set();
+    const assignedIds = new Set();
 
     const sections = SECTION_CONFIG
-        .map(({ title, indexes }) => {
-            const members = execs.filter((_, i) => {
-                if (indexInRanges(i, indexes)) {
-                    assignedIndexes.add(i);
+        .map(({ title, orderIndexes }) => {
+            const members = execs.filter((m) => {
+                if (orderIndexInRanges(m.order_index, orderIndexes)) {
+                    assignedIds.add(m.id);
                     return true;
                 }
                 return false;
@@ -46,8 +41,7 @@ function groupExecs(execs) {
         })
         .filter((s) => s.members.length > 0);
 
-    // Catch-all: everyone not assigned to a named section
-    const remaining = execs.filter((_, i) => !assignedIndexes.has(i));
+    const remaining = execs.filter((m) => !assignedIds.has(m.id));
     if (remaining.length > 0) {
         sections.push({ title: "Executive Team", members: remaining });
     }
@@ -56,20 +50,27 @@ function groupExecs(execs) {
 }
 
 function splitByRole(members) {
-    const vp = members.filter(
-        (m) =>
-            m.role.includes("Vice President") ||
-            m.role.includes("Co-President") ||
-            m.role.includes("VP")
-    );
-    const director = members.filter((m) => m.role.includes("Director"));
-    const other = members.filter(
-        (m) =>
-            !m.role.includes("Vice President") &&
-            !m.role.includes("Co-President") &&
-            !m.role.includes("VP") &&
-            !m.role.includes("Director")
-    );
+    const vp = members.filter((m) => {
+        const role = m.role ?? "";
+        return (
+            role.includes("Vice President") ||
+            role.includes("Co-President") ||
+            role.includes("VP")
+        );
+    });
+    const director = members.filter((m) => {
+        const role = m.role ?? "";
+        return role.includes("Director");
+    });
+    const other = members.filter((m) => {
+        const role = m.role ?? "";
+        return (
+            !role.includes("Vice President") &&
+            !role.includes("Co-President") &&
+            !role.includes("VP") &&
+            !role.includes("Director")
+        );
+    });
     return { vp, director, other };
 }
 
@@ -112,7 +113,9 @@ export default function ExecutiveSection() {
                 </p>
 
                 {loading && <p className="text-gray-500 text-xl">Loading team...</p>}
-                {error && <p className="text-red-500 text-xl">{error}</p>}
+                {error && (
+                    <ErrorState/>
+                )}
 
                 {!loading &&
                     !error &&

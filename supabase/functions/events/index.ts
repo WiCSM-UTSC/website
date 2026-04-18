@@ -85,7 +85,7 @@ Deno.serve(async (req) => {
     const { data, error } = await supabase
       .from("events")
       .select(
-        "id, title, description, date, start_time, end_time, location, image_url, signup_url, created_at, updated_at",
+        "id, title, description, date, start_time, end_time, location, image_url, signup_url, created_at, updated_at"
       )
       .gte("date", today)
       .order("date", { ascending: true });
@@ -101,6 +101,45 @@ Deno.serve(async (req) => {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
+  }
+
+  if (req.method === "GET") {
+    const segments = path.split("/").filter(Boolean);
+    const eventId = segments[segments.length - 1];
+
+    if (eventId && eventId !== "events") {
+      const supabaseUrl = Deno.env.get("SUPABASE_URL");
+      const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+      if (!supabaseUrl || !supabaseServiceRoleKey) {
+        return new Response("Server misconfigured", { status: 500 });
+      }
+
+      const supabase = createClient(
+        supabaseUrl,
+        supabaseServiceRoleKey
+      );
+
+      const { data, error } = await supabase
+        .from("events")
+        .select(
+          "id, title, description, date, start_time, end_time, location, image_url, signup_url, created_at, updated_at"
+        )
+        .eq("id", eventId)
+        .single();
+
+      if (error || !data) {
+        return new Response(
+          JSON.stringify({ error: "Event not found" }),
+          { status: 404, headers: { "Content-Type": "application/json" } }
+        );
+      }
+
+      return new Response(
+        JSON.stringify({ event: data }),
+        { status: 200, headers: { "Content-Type": "application/json" } }
+      );
+    }
   }
 
   if (req.method !== "PATCH") {
@@ -175,4 +214,3 @@ Deno.serve(async (req) => {
     headers: { "Content-Type": "application/json" },
   });
 });
-

@@ -122,7 +122,7 @@
   flex-shrink: 0;
 }
 
-.event-card__poster img {
+.event-card__poster-image {
   display: block;
   width: 260px;
   height: auto;
@@ -131,7 +131,7 @@
 
 /* Responsive poster sizing */
 @media (max-width: 1024px) {
-  .event-card__poster img {
+  .event-card__poster-image {
     width: 200px;
   }
 }
@@ -141,7 +141,7 @@
     justify-content: center;
     width: 100%;
   }
-  .event-card__poster img {
+  .event-card__poster-image {
     width: 100%;
     max-width: 300px;
   }

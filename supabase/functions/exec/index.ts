@@ -6,7 +6,6 @@ Deno.serve(async (req) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
-    //If keys are not found
     if (!supabaseUrl || !serviceRoleKey) {
       return new Response(JSON.stringify({ error: "Env vars missing" }), {
         status: 500,
@@ -30,7 +29,6 @@ Deno.serve(async (req) => {
         });
       }
 
-      // Only allow these fields
       const allowedPut = new Set([ "id", "role", "bio", "name", "image_url", "order_index", ]);
       const extraPutFields = Object.keys(body).filter( (k) => !allowedPut.has(k),);
 
@@ -45,7 +43,6 @@ Deno.serve(async (req) => {
 
       const { id, role, bio, name, image_url, order_index } = body;
 
-      //Missing fields
       if (!id) {
         return new Response(JSON.stringify({ error: "Missing fields." }), {
           status: 400,
@@ -53,14 +50,12 @@ Deno.serve(async (req) => {
         });
       }
 
-      // Check if id exists in exec_team (for indep error to not confuse with no data changed, even for a valid entry)
       const { data: existingExec, error: findError } = await supabase
         .from("exec_team")
         .select("id")
         .eq("id", id)
         .maybeSingle();
 
-      //db error
       if (findError) {
         return new Response(JSON.stringify({ error: findError.message }), {
           status: 500,
@@ -68,7 +63,6 @@ Deno.serve(async (req) => {
         });
       }
 
-      //no data found = DNE
       if (!existingExec) {
         return new Response(
           JSON.stringify({ error: "Exec member with this id does not exist." }),
@@ -76,7 +70,6 @@ Deno.serve(async (req) => {
         );
       }
 
-      // Validate order_index is an integer if provided
       if (order_index !== undefined && order_index !== null) {
         if (typeof order_index !== "number" || !Number.isInteger(order_index)) {
           return new Response(
@@ -108,7 +101,6 @@ Deno.serve(async (req) => {
         });
       }
 
-      //On success
       return new Response(
         JSON.stringify({ success: true, message: "Exec member updated." }),
         {
@@ -118,7 +110,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    //get method
     if (req.method === "GET") {
       const { data, error } = await supabase
         .from("exec_team")
@@ -151,33 +142,49 @@ Deno.serve(async (req) => {
       const execIndex = parts.indexOf("exec");
       if (execIndex !== -1 && parts[execIndex + 2] === "image") {
         const execId = parts[execIndex + 1];
-        const authHeader =
-          req.headers.get("authorization") ||
-          req.headers.get("Authorization") ||
-          "";
 
-        const token = authHeader.startsWith("Bearer ")
-          ? authHeader.slice("Bearer ".length).trim()
-          : "";
-
-        if (!token) {
-          return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
-            headers: { "Content-Type": "application/json" },
-          });
+        // Validate exec ID exists FIRST before processing any file data
+        if (!execId || execId.trim() === "") {
+          return new Response(
+            JSON.stringify({ error: "Missing exec ID in URL path." }),
+            { status: 400, headers: { "Content-Type": "application/json" } },
+          );
         }
 
-        // Validate token with Supabase Auth
-        const { data: userData, error: userError } =
-          await supabase.auth.getUser(token);
-        if (userError || !userData?.user) {
-          return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
-            headers: { "Content-Type": "application/json" },
-          });
+        const { data: existingExec, error: findError } = await supabase
+          .from("exec_team")
+          .select("id")
+          .eq("id", execId)
+          .single();
+
+        if (findError || !existingExec) {
+          return new Response(
+            JSON.stringify({ error: "Exec member with this id does not exist." }),
+            { status: 404, headers: { "Content-Type": "application/json" } },
+          );
         }
 
-        // Parse multipart/form-data (this will throw if not multipart)
+        const MAX_FORM_BYTES = 150 * 1024 * 1024; 
+        const contentLengthHeader =
+          req.headers.get("content-length") || req.headers.get("Content-Length");
+        if (contentLengthHeader) {
+          const contentLength = Number(contentLengthHeader);
+          if (!Number.isFinite(contentLength) || contentLength <= 0) {
+            return new Response(JSON.stringify({ error: "Invalid Content-Length" }), {
+              status: 400,
+              headers: { "Content-Type": "application/json" },
+            });
+          }
+          if (contentLength > MAX_FORM_BYTES) {
+            return new Response(
+              JSON.stringify({
+                error: `Form too large. Max allowed is ${MAX_FORM_BYTES} bytes.`,
+              }),
+              { status: 413, headers: { "Content-Type": "application/json" } },
+            );
+          }
+        }
+
         let form;
         try {
           form = await req.formData();
@@ -193,6 +200,15 @@ Deno.serve(async (req) => {
           return new Response(
             JSON.stringify({ error: "Missing file field 'image'" }),
             { status: 400, headers: { "Content-Type": "application/json" } },
+          );
+        }
+
+        if (typeof image.size === "number" && image.size > MAX_FORM_BYTES) {
+          return new Response(
+            JSON.stringify({
+              error: `File too large. Max allowed is ${MAX_FORM_BYTES} bytes.`,
+            }),
+            { status: 413, headers: { "Content-Type": "application/json" } },
           );
         }
 
@@ -224,6 +240,21 @@ Deno.serve(async (req) => {
 
         const bucket = "exec-images";
         const objectPath = `${execId}.${ext}`;
+        const { data: existingFiles } = await supabase.storage
+          .from(bucket)
+          .list("", {
+            search: execId,
+          });
+
+        if (existingFiles && existingFiles.length > 0) {
+          const filesToDelete = existingFiles
+            .filter((file) => file.name.startsWith(`${execId}.`))
+            .map((file) => file.name);
+
+          if (filesToDelete.length > 0) {
+            await supabase.storage.from(bucket).remove(filesToDelete);
+          }
+        }
 
         const { error: uploadError } = await supabase.storage
           .from(bucket)
@@ -267,7 +298,6 @@ Deno.serve(async (req) => {
       }
     }
 
-    //post method
     if (req.method === "POST") {
       let body;
       try {
@@ -324,7 +354,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    //method not allowed
     return new Response(JSON.stringify({ error: "Method not allowed" }), {
       status: 405,
       headers: { "Content-Type": "application/json" },

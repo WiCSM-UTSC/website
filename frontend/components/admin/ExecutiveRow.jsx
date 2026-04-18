@@ -33,9 +33,15 @@ export default function ExecutiveRow({
         setMounted(true);
     }, []);
 
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
     const handleFileSelect = (e) => {
         const file = e.target.files[0];
         if (file) {
+            if (file.size > MAX_FILE_SIZE) {
+                alert("File size must be less than 5MB");
+                return;
+            }
             const reader = new FileReader();
             reader.onloadend = () => {
                 setPreviewImage(reader.result);
@@ -50,6 +56,10 @@ export default function ExecutiveRow({
         e.preventDefault();
         const file = e.dataTransfer.files[0];
         if (file && file.type.startsWith('image/')) {
+            if (file.size > MAX_FILE_SIZE) {
+                alert("File size must be less than 5MB");
+                return;
+            }
             const reader = new FileReader();
             reader.onloadend = () => {
                 setPreviewImage(reader.result);
@@ -145,7 +155,7 @@ export default function ExecutiveRow({
                             type="text"
                             value={editData.name}
                             onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                            className="flex-1 px-4 py-2 border border-[#D5D0E5] rounded-lg text-2xl focus:outline-none focus:ring-2 focus:ring-[#54528F]"
+                            className="flex-1 px-4 py-2 border border-[#D5D0E5] rounded-lg text-2xl text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#54528F]"
                             placeholder="Name"
                         />
                     ) : (
@@ -163,7 +173,7 @@ export default function ExecutiveRow({
                         type="text"
                         value={editData.team}
                         onChange={(e) => setEditData({ ...editData, team: e.target.value })}
-                        className="w-full px-4 py-2 border border-[#D5D0E5] rounded-lg text-2xl focus:outline-none focus:ring-2 focus:ring-[#54528F]"
+                        className="w-full px-4 py-2 border border-[#D5D0E5] rounded-lg text-2xl text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#54528F]"
                         placeholder="Team"
                     />
                 ) : (
@@ -178,7 +188,7 @@ export default function ExecutiveRow({
                         type="text"
                         value={editData.role}
                         onChange={(e) => setEditData({ ...editData, role: e.target.value })}
-                        className="w-full px-4 py-2 border border-[#D5D0E5] rounded-lg text-2xl focus:outline-none focus:ring-2 focus:ring-[#54528F]"
+                        className="w-full px-4 py-2 border border-[#D5D0E5] rounded-lg text-2xl text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#54528F]"
                         placeholder="Role"
                     />
                 ) : (
@@ -193,7 +203,7 @@ export default function ExecutiveRow({
                         type="text"
                         value={editData.bio}
                         onChange={(e) => setEditData({ ...editData, bio: e.target.value })}
-                        className="w-full px-4 py-2 border border-[#D5D0E5] rounded-lg text-2xl focus:outline-none focus:ring-2 focus:ring-[#54528F]"
+                        className="w-full px-4 py-2 border border-[#D5D0E5] rounded-lg text-2xl text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#54528F]"
                         placeholder="Bio"
                     />
                 ) : (

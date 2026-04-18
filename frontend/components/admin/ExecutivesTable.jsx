@@ -65,11 +65,11 @@ export default function ExecutivesTable({
     return (
         <div className="bg-white rounded-xl border border-[#E5E0F5] overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-[#E5E0F5]">
-                <h1 className="text-3xl font-bold text-[#54528F]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-4 md:px-6 py-4 md:py-5 border-b border-[#E5E0F5]">
+                <h1 className="text-2xl md:text-3xl font-bold text-[#54528F]">
                     Manage Executives
                 </h1>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3 md:gap-4">
                     <AddExecButton onClick={onAddExecutive} />
                     <DeleteButton onClick={handleDeleteClick} disabled={!hasSelection} />
                 </div>
@@ -77,7 +77,8 @@ export default function ExecutivesTable({
 
             {/* Table */}
             {executives.length > 0 ? (
-                <table className="w-full">
+                <div className="overflow-x-auto">
+                <table className="w-full min-w-[800px]">
                     <thead>
                         <tr className="bg-[#F9F7FF] border-b border-[#E5E0F5]">
                             <th className="w-12 px-3"></th>
@@ -124,6 +125,7 @@ export default function ExecutivesTable({
                         ))}
                     </tbody>
                 </table>
+                </div>
             ) : (
                 /* Empty State */
                 <div className="flex flex-col items-center justify-center py-24">

@@ -1,6 +1,6 @@
 export default function JoinUsSection() {
   return (
-    <div className="py-16 px-6">
+    <div className="py-16 px-6" style={{ background: 'linear-gradient(180deg, #F0EEFF 0%, #F0EEFF 90%, #C8E8FA 100%)' }}>
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-4xl font-bold text-[#54528F] mb-4">
           Join Us

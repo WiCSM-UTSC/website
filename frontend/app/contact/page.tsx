@@ -10,10 +10,12 @@ export default function ContactUsPage() {
         <div 
             className="min-h-screen"
             style={{
-                background: 'linear-gradient(180deg, rgba(249, 246, 255, 0.2) 0%, #9BCEEE 44.37%, #A9A7EB 80.91%)',
+               background: 'linear-gradient(180deg, #E8E0FF 0%, #B8A9F0 5%, #C8E8FA 20%, #C8E8FA 100%)',
             }}
         >
-            <Navbar />
+            <div className="pt-4 px-4">
+                <Navbar />
+            </div>
             <ContactHeader title='Contact Us' subtitle="" />
             <GetInTouchSection />
             <MapSection />

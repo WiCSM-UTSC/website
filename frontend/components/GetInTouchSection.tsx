@@ -19,9 +19,9 @@ export default function GetInTouchSection() {
           <div className="space-y-4">
             {/* Email */}
             <div className="flex items-start gap-3">
-              <MdEmail className="w-6 h-6 text-[#54528F] flex-shrink-0 mt-1" />
+              <MdEmail className="w-6 h-6 text-[#562D9B] flex-shrink-0 mt-1" />
               <div>
-                <p className="font-semibold text-[#54528F] text-sm">Email us</p>
+                <p className="font-semibold text-[#562D9B] text-sm">Email us</p>
                 <a href="mailto:wicsm.utsc@gmail.com" className="text-[#54528F] hover:underline text-sm">
                   wicsm.utsc@gmail.com
                 </a>
@@ -30,9 +30,9 @@ export default function GetInTouchSection() {
 
             {/* Instagram */}
             <div className="flex items-start gap-3">
-              <FaInstagram className="w-6 h-6 text-[#54528F] flex-shrink-0 mt-1" />
+              <FaInstagram className="w-6 h-6 text-[#562D9B] flex-shrink-0 mt-1" />
               <div>
-                <p className="font-semibold text-[#54528F] text-sm">Instagram</p>
+                <p className="font-semibold text-[#562D9B] text-sm">Instagram</p>
                 <a href="https://instagram.com/wicsm.utsc" target="_blank" rel="noopener noreferrer" className="text-[#54528F] hover:underline text-sm">
                   @wicsm.utsc
                 </a>
@@ -41,9 +41,9 @@ export default function GetInTouchSection() {
 
             {/* LinkedIn */}
             <div className="flex items-start gap-3">
-              <FaLinkedin className="w-6 h-6 text-[#54528F] flex-shrink-0 mt-1" />
+              <FaLinkedin className="w-6 h-6 text-[#562D9B] flex-shrink-0 mt-1" />
               <div>
-                <p className="font-semibold text-[#54528F] text-sm">Linked In</p>
+                <p className="font-semibold text-[#562D9B] text-sm">Linked In</p>
                 <a href="https://linkedin.com/company/wicsm" target="_blank" rel="noopener noreferrer" className="text-[#54528F] hover:underline text-sm">
                   Women in Computer Science, Statistics and Mathematics
                 </a>

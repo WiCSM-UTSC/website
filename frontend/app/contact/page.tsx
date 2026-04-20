@@ -10,7 +10,7 @@ export default function ContactUsPage() {
         <div 
             className="min-h-screen"
             style={{
-               background: 'linear-gradient(180deg, #E8E0FF 0%, #B8A9F0 5%, #C8E8FA 20%, #C8E8FA 100%)',
+               background: 'linear-gradient(180deg, #C8E8FA 0%, #B8A9F0 15%, #C8E8FA 30%, #C8E8FA 100%)',
             }}
         >
             <div className="pt-4 px-4">

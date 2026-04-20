@@ -8,7 +8,7 @@ export default function ContactHeader({ title, subtitle }: ContactHeaderProps) {
     <div className="relative pb-12 px-6 pt-16">
       {/* Title */}
       <div className="max-w-6xl mx-auto text-center">
-        <h1 className="text-5xl md:text-6xl font-bold text-[#54528F] mb-4">
+        <h1 className="text-5xl md:text-6xl font-bold text-[#562D9B] mb-4">
           {title}
         </h1>
         {subtitle && (

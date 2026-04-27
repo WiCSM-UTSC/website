@@ -6,6 +6,8 @@ import { X } from "lucide-react";
 export default function AddEventModal({ isOpen, onClose, onAdd }) {
     const [title, setTitle] = useState("");
     const [date, setDate] = useState("");
+    const [startTime, setStartTime] = useState("");
+    const [endTime, setEndTime] = useState("");
     const [location, setLocation] = useState("");
     const [signUpUrl, setSignUpUrl] = useState("");
     const [description, setDescription] = useState("");
@@ -19,6 +21,8 @@ export default function AddEventModal({ isOpen, onClose, onAdd }) {
         onAdd?.({
             title: title.trim(),
             date: date || "xxxx/xx/xx",
+            startTime: startTime.trim(),
+            endTime: endTime.trim(),
             location: location.trim(),
             signUpUrl: signUpUrl.trim(),
             description: description.trim(),
@@ -27,6 +31,8 @@ export default function AddEventModal({ isOpen, onClose, onAdd }) {
         });
         setTitle("");
         setDate("");
+        setStartTime("");
+        setEndTime("");
         setLocation("");
         setSignUpUrl("");
         setDescription("");
@@ -37,6 +43,8 @@ export default function AddEventModal({ isOpen, onClose, onAdd }) {
     const handleClose = () => {
         setTitle("");
         setDate("");
+        setStartTime("");
+        setEndTime("");
         setLocation("");
         setSignUpUrl("");
         setDescription("");
@@ -96,6 +104,30 @@ export default function AddEventModal({ isOpen, onClose, onAdd }) {
                             onChange={(e) => setDate(e.target.value)}
                             className="w-full px-4 py-3 border border-[#E5E0F5] rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#54528F] focus:border-transparent"
                         />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-[#54528F] mb-2">
+                                Start Time
+                            </label>
+                            <input
+                                type="time"
+                                value={startTime}
+                                onChange={(e) => setStartTime(e.target.value)}
+                                className="w-full px-4 py-3 border border-[#E5E0F5] rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#54528F] focus:border-transparent"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-[#54528F] mb-2">
+                                End Time
+                            </label>
+                            <input
+                                type="time"
+                                value={endTime}
+                                onChange={(e) => setEndTime(e.target.value)}
+                                className="w-full px-4 py-3 border border-[#E5E0F5] rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#54528F] focus:border-transparent"
+                            />
+                        </div>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-[#54528F] mb-2">

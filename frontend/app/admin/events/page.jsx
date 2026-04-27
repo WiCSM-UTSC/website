@@ -39,6 +39,12 @@ export default function ManageEventsPage() {
             id: Date.now(),
             title: eventData?.title ?? "Event title",
             date: eventData?.date ?? "xxxx/xx/xx",
+            startTime: eventData?.startTime ?? "",
+            endTime: eventData?.endTime ?? "",
+            location: eventData?.location ?? "",
+            signUpUrl: eventData?.signUpUrl ?? "",
+            description: eventData?.description ?? "",
+            imageName: eventData?.imageName ?? "",
             status: eventData?.status ?? "Upcoming",
         };
         setEvents([...events, newEvent]);

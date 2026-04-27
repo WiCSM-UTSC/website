@@ -45,7 +45,7 @@ export default function Footer() {
               WiCSM
             </p>
             <p className="text-[#54528F] text-sm">
-              Women in Computer Science, Statistics and Mathematics UTSC
+              Women in Computer Science, Statistics & Mathematics @ UTSC
             </p>
           </div>
         </div>

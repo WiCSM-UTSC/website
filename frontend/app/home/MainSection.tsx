@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function MainSection() {
   const [active, setActive] = useState(0);
 
-  const photos = ["/photi1.png", "/photi2.png", "/photi3.png"];
+  const photos = ["/home-shuffle/1.JPG", "/home-shuffle/2.jpg", "/home-shuffle/3.jpeg"];
 
   return (
     <section
@@ -42,10 +42,10 @@ export default function MainSection() {
           WiCSM
         </h1>
 
-        <h2 className="text-4xl mt-2 text-[#3A1B6B]">UTSC</h2>
+        <h2 className="text-4xl mt-2 text-[#3A1B6B]">Women in Computer Science, Statistics & Mathematics</h2>
 
         <p className="mt-6 text-[0.8rem] md:text-lg text-[#2D1B4E]">
-          Motto, saying Motto, saying Motto, saying Motto, saying
+          University of Toronto Scarborough
         </p>
       </div>
 

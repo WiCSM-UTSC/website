@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import SectionHeader from "@/components/SectionHeader";
 
@@ -7,16 +8,26 @@ export default function SupportMissionSection() {
       <div className="flex-col md:flex-row flex items-center justify-center gap-20 md:gap-40">
         {/* LEFT: Image / placeholder */}
         <div
-          className="w-[250px] h-[250px] md:w-[360px] md:h-[360px] rounded-3xl 
-                        bg-white shadow-[0_0_40px_rgba(155,147,232,0.6)] shrink-0"
-        />
+          className="relative w-[250px] h-[250px] md:w-[360px] md:h-[360px] rounded-3xl overflow-hidden 
+                        shadow-[0_0_40px_rgba(155,147,232,0.6)] shrink-0"
+        >
+          <Image
+            src="/sponsor.jpg"
+            alt="WiCSM Sponsor"
+            fill
+            className="object-cover"
+          />
+        </div>
 
         {/* RIGHT: Text + CTA */}
         <div className="max-w-xl">
           <SectionHeader>SUPPORT OUR MISSION</SectionHeader>
 
           <p className="mt-4 text-[0.8rem] md:text-lg text-[#2D1B4E]">
-            1–2 liner catch/hook, then say join us etc blah blah.
+            Support WiCSM in creating spaces where students can explore careers, build connections, and grow with confidence.
+          </p>
+          <p className="mt-4 text-[0.8rem] md:text-lg text-[#2D1B4E]">
+            Partner with us to engage with emerging talent and make a meaningful impact.
           </p>
 
           <Link

@@ -1,6 +1,6 @@
 import SectionHeader from "@/components/SectionHeader";
 import ValueCard from "@/components/ValueCard";
-import { Lightbulb, Rocket, Users } from "lucide-react";
+import { Lightbulb, Heart, Users } from "lucide-react";
 
 export default function OurValuesSection() {
   return (
@@ -31,8 +31,8 @@ export default function OurValuesSection() {
           icon={
             <Users className="h-14 w-14 md:h-16 md:w-16" aria-hidden="true" />
           }
-          title="Subtitle"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+          title="Inclusivity"
+          description="We are committed to creating a welcoming and supportive space for women and underrepresented groups in computer science, statistics, and mathematics."
         />
         <ValueCard
           icon={
@@ -41,15 +41,15 @@ export default function OurValuesSection() {
               aria-hidden="true"
             />
           }
-          title="Subtitle"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+          title="Growth"
+          description="We empower our members to develop their technical, academic, and professional skills through workshops, mentorship, and hands-on experiences."
         />
         <ValueCard
           icon={
-            <Rocket className="h-14 w-14 md:h-16 md:w-16" aria-hidden="true" />
+            <Heart className="h-14 w-14 md:h-16 md:w-16" aria-hidden="true" />
           }
-          title="Subtitle"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+          title="Community"
+          description="We foster meaningful connections by bringing students together through shared experiences, collaboration, and support."
         />
       </div>
 

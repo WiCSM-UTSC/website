@@ -34,6 +34,9 @@ export default function WhoWeAreSection() {
     <section className="py-32 bg-white overflow-hidden">
       <div className="text-center mb-16">
         <SectionHeader>WHO WE ARE</SectionHeader>
+        <p className="mx-auto mt-6 max-w-5xl px-6 text-lg md:text-xl leading-relaxed text-[#2D1B4E]">
+          WiCSM (Women in Computer Science, Statistics & Mathematics) is a student-led community at the University of Toronto Scarborough dedicated to empowering women and underrepresented groups in STEM. We create opportunities for learning, mentorship, and connection through events, workshops, and collaborations.
+        </p>
       </div>
 
       {/* VIEWPORT */}

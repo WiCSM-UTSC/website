@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SectionHeader from "@/components/SectionHeader";
 
 export default function SupportMissionSection() {
@@ -12,17 +13,17 @@ export default function SupportMissionSection() {
 
         {/* RIGHT: Text + CTA */}
         <div className="max-w-xl">
-          <SectionHeader className="align-middle">
-            SUPPORT OUR MISSION
-          </SectionHeader>
+          <SectionHeader>SUPPORT OUR MISSION</SectionHeader>
 
           <p className="mt-4 text-[0.8rem] md:text-lg text-[#2D1B4E]">
             1–2 liner catch/hook, then say join us etc blah blah.
           </p>
 
-          <button
+          <Link
+            href="/contact"
             className="
               mt-8
+              inline-block
               px-10
               py-3
               rounded-full
@@ -35,7 +36,7 @@ export default function SupportMissionSection() {
             "
           >
             Contact us
-          </button>
+          </Link>
         </div>
       </div>
 

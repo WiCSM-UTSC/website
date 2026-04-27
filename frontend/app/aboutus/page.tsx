@@ -1,5 +1,5 @@
 import Navbar from '@/components/Navbar';
-import AboutSection from '@/components/AboutSection';
+import AboutSection from '@/app/home/AboutSection';
 import ExecutiveSection from '@/components/ExecutiveSection';
 import Footer from '@/components/Footer';
 

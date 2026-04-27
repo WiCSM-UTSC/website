@@ -1,7 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FaDiscord, FaFacebook, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 
 export default function Footer() {
+  const socials = [
+    {
+      name: "Instagram",
+      href: "https://www.instagram.com/wicsm.utsc/",
+      Icon: FaInstagram,
+    },
+    {
+      name: "Facebook",
+      href: "https://www.facebook.com/WiCSM.UTSC/",
+      Icon: FaFacebook,
+    },
+    {
+      name: "Discord",
+      href: "https://discord.com/invite/QgfWQqh6Fa",
+      Icon: FaDiscord,
+    },
+    {
+      name: "LinkedIn",
+      href: "https://www.linkedin.com/company/wicsm-utsc/",
+      Icon: FaLinkedinIn,
+    },
+  ];
+
   return (
     <footer className="w-full bg-[linear-gradient(to_bottom,_#F9F6FF33_0%,_#9BCEEE_45%,_#A9A7EB_100%)] px-6 sm:px-12 md:px-20 py-16">
 
@@ -29,7 +53,7 @@ export default function Footer() {
         {/* Quick Links */}
         <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-lg font-semibold text-white">
           <Link href="/" className="hover:underline">Home</Link>
-          <Link href="/about" className="hover:underline">About</Link>
+          <Link href="/aboutus" className="hover:underline">About</Link>
           <Link href="/events" className="hover:underline">Events</Link>
           <Link href="/contact" className="hover:underline">Contact</Link>
         </div>
@@ -47,12 +71,17 @@ export default function Footer() {
         </p>
 
         <div className="flex gap-4">
-          {[1, 2, 3, 4].map((_, i) => (
+          {socials.map(({ name, href, Icon }) => (
             <a
-              key={i}
-              href="#"
-              className="w-10 h-10 bg-white rounded-full hover:bg-gray-200 transition"
-            />
+              key={name}
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={name}
+              className="w-10 h-10 bg-white rounded-full hover:bg-gray-200 transition flex items-center justify-center text-[#54528F]"
+            >
+              <Icon className="text-lg" />
+            </a>
           ))}
         </div>
 

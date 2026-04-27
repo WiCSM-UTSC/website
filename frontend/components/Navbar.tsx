@@ -25,17 +25,13 @@ export default function Navbar() {
         height={40}
       />
 
-      <div className="hidden md:flex gap-20 font-semibold text-[#54528F] text-xl">
+      <div className="hidden md:flex flex-1 justify-center gap-20 font-semibold text-[#54528F] text-xl">
         {navItems.map((item) => (
           <Link key={item.href} href={item.href} onClick={() => setOpen(false)}>
             {item.label}
           </Link>
         ))}
       </div>
-
-      <button className="hidden md:block px-10 py-2 bg-[#F7F3FB] rounded-2xl font-semibold text-[#54528F] text-xl">
-        login
-      </button>
 
       {/* Hamburger */}
       <button
@@ -53,9 +49,6 @@ export default function Navbar() {
               {item.label}
             </Link>
           ))}
-          <button className="px-10 py-2 bg-[#F7F3FB] rounded-2xl">
-            login
-          </button>
         </div>
       )}
     </nav>

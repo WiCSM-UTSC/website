@@ -3,7 +3,7 @@ import SectionHeader from "@/components/SectionHeader";
 export default function SupportMissionSection() {
   return (
     <section className="relative py-32 px-24 bg-[#ece7fa]">
-      <div className="flex-col md:flex-row flex items-center justify-between gap-24">
+      <div className="flex-col md:flex-row flex items-center justify-center gap-20 md:gap-40">
         {/* LEFT: Image / placeholder */}
         <div
           className="w-[250px] h-[250px] md:w-[360px] md:h-[360px] rounded-3xl 

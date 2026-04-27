@@ -17,9 +17,9 @@ export default function MainSection() {
           md:flex-row
           items-center
           justify-center
-          md:justify-between
           px-24
-          gap-3
+          gap-10
+          md:gap-24
           overflow-hidden
           bg-linear-to-br
           from-[#9B93E8]
@@ -52,7 +52,7 @@ export default function MainSection() {
       {/* PHOTO STACK */}
       <div
         onClick={() => setActive((prev) => (prev + 1) % photos.length)}
-        className="relative cursor-pointer group order-1 md:order-2 md:mr-15"
+        className="relative cursor-pointer group order-1 md:order-2"
       >
         <div className="relative w-[320px] h-[320px]">
           {/* GLOW */}

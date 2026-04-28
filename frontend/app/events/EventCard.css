@@ -113,6 +113,25 @@
   font-size: 16px;
   line-height: 1.6;
   color: #374151;
+  display: -webkit-box;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+  .event-card__description {
+    line-clamp: 4;
+    -webkit-line-clamp: 4;
+  }
+}
+
+@media (max-width: 768px) {
+  .event-card__description {
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+  }
 }
 
 /* Poster */
@@ -124,7 +143,7 @@
 
 .event-card__poster-image {
   display: block;
-  width: 260px;
+  width: 160px;
   height: auto;
   object-fit: cover;
 }
@@ -132,7 +151,7 @@
 /* Responsive poster sizing */
 @media (max-width: 1024px) {
   .event-card__poster-image {
-    width: 200px;
+    width: 140px;
   }
 }
 
@@ -143,7 +162,7 @@
   }
   .event-card__poster-image {
     width: 100%;
-    max-width: 300px;
+    max-width: 200px;
   }
 }
 .event-card__title--link {

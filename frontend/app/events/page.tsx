@@ -61,11 +61,11 @@ export default function EventsPage() {
       <Navbar />
       <main className="grow container mx-auto px-6 py-12 max-w-6xl">
         <header className="mb-10 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-[#513C97] mb-2">
+          <h1 className="text-4xl md:text-6xl font-bold text-[#513C97] mb-6">
             Events
           </h1>
           <p className="text-lg text-gray-600">
-            Stay up to date with our latest events.
+            Discover upcoming events, workshops, and opportunities to learn, connect, and grow.
           </p>
         </header>
         {error ? (

@@ -65,7 +65,7 @@ export default function EventSection({
   return (
     <section className="mb-16">
       <h2 className="text-2xl md:text-5xl font-semibold text-[#513C97] mb-6">
-        {isCurrent ? "Current Events" : "Past Events"}
+        {isCurrent ? "Upcoming Events" : "Past Events"}
       </h2>
       <div className="flex flex-col gap-10">
         {loading ? (

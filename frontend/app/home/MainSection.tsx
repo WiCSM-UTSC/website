@@ -17,7 +17,13 @@ export default function MainSection() {
           md:flex-row
           items-center
           justify-center
-          px-24
+          px-6
+          sm:px-10
+          md:px-16
+          lg:px-24
+          pt-28
+          sm:pt-24
+          pb-16
           gap-10
           md:gap-24
           overflow-hidden
@@ -37,14 +43,14 @@ export default function MainSection() {
 
       />
       {/* CONTENT */}
-      <div className="relative z-10 max-w-xl text-center md:text-left order-2 md:order-1">
+      <div className="relative z-30 max-w-xl text-center md:text-left order-2 md:order-1">
         <h1 className="text-[90px] md:text-9xl font-bold text-[#3A1B6B] drop-shadow-lg">
           WiCSM
         </h1>
 
         <h2 className="text-4xl mt-2 text-[#3A1B6B]">Women in Computer Science, Statistics & Mathematics</h2>
 
-        <p className="mt-6 text-[0.8rem] md:text-lg text-[#2D1B4E]">
+        <p className="mt-6 text-base md:text-lg text-[#2D1B4E]">
           University of Toronto Scarborough
         </p>
       </div>
@@ -54,7 +60,7 @@ export default function MainSection() {
         onClick={() => setActive((prev) => (prev + 1) % photos.length)}
         className="relative cursor-pointer group order-1 md:order-2"
       >
-        <div className="relative w-[320px] h-[320px]">
+        <div className="relative w-[260px] h-[260px] sm:w-[300px] sm:h-[300px] md:w-[320px] md:h-[320px] max-w-full max-h-full">
           {/* GLOW */}
           <div
             className="absolute inset-0 pointer-events-none"

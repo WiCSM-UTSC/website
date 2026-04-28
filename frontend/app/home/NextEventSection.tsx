@@ -10,7 +10,7 @@ export default function NextEventSection() {
         bg-white
       "
     >
-      <div className="relative max-w-7xl mx-auto px-24">
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-10 md:px-16 lg:px-24">
         {/* TITLE */}
         <div className="mb-24 text-center">
           <SectionHeader>DATA BITES</SectionHeader>
@@ -18,14 +18,14 @@ export default function NextEventSection() {
 
         {/* CONTENT */}
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-24">
-          <div className="space-y-4">
-            <p className="text-lg text-[#2D1B4E] max-w-md leading-relaxed">
+          <div className="space-y-4 text-center md:text-left">
+            <p className="text-lg text-[#2D1B4E] max-w-md leading-relaxed mx-auto md:mx-0">
               Data Bites is WiCSM's flagship networking event, designed to connect students with industry professionals in a setting that feels approachable, honest, and genuinely useful.
             </p>
-            <p className="text-lg text-[#2D1B4E] max-w-md leading-relaxed">
+            <p className="text-lg text-[#2D1B4E] max-w-md leading-relaxed mx-auto md:mx-0">
               Each year, we bring together students from across programs and universities with professionals working in roles like software engineering, data science, consulting, project management, academia, and more. The goal is simple: to make career exploration less intimidating and more human.
             </p>
-            <p className="text-lg text-[#2D1B4E] max-w-md leading-relaxed">
+            <p className="text-lg text-[#2D1B4E] max-w-md leading-relaxed mx-auto md:mx-0">
               With ~100 attendees annually, Data Bites creates space for students to ask questions, build connections, and gain clarity on what comes next, whether that's their first internship or a long-term career direction.
             </p>
           </div>

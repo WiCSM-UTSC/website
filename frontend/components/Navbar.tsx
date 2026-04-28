@@ -15,7 +15,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="relative border-3 border-[#54528F] rounded-3xl flex items-center justify-between py-2 px-7 max-w-5xl mx-auto bg-white">
+    <nav className="relative border-3 border-[#54528F] rounded-3xl flex items-center justify-between py-2 px-5 sm:px-7 w-[calc(100%-2rem)] mx-4 sm:w-[calc(100%-3rem)] sm:mx-6 md:w-full md:max-w-5xl md:mx-auto bg-white">
       
       {/* Logo */}
       <Image

@@ -51,7 +51,7 @@ export default function Footer() {
         </div>
 
         {/* Quick Links */}
-        <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-lg font-semibold text-white">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-lg font-semibold text-white self-center md:self-auto">
           <Link href="/" className="hover:underline">Home</Link>
           <Link href="/aboutus" className="hover:underline">About</Link>
           <Link href="/events" className="hover:underline">Events</Link>

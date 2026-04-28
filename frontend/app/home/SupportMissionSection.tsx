@@ -4,7 +4,7 @@ import SectionHeader from "@/components/SectionHeader";
 
 export default function SupportMissionSection() {
   return (
-    <section className="relative py-32 px-24 bg-[#ece7fa]">
+    <section className="relative py-32 px-6 sm:px-10 md:px-16 lg:px-24 bg-[#ece7fa]">
       <div className="flex-col md:flex-row flex items-center justify-center gap-20 md:gap-40">
         {/* LEFT: Image / placeholder */}
         <div
@@ -20,13 +20,13 @@ export default function SupportMissionSection() {
         </div>
 
         {/* RIGHT: Text + CTA */}
-        <div className="max-w-xl">
+        <div className="max-w-xl text-center md:text-left">
           <SectionHeader>SUPPORT OUR MISSION</SectionHeader>
 
-          <p className="mt-4 text-[0.8rem] md:text-lg text-[#2D1B4E]">
+          <p className="mt-4 text-lg text-[#2D1B4E]">
             Support WiCSM in creating spaces where students can explore careers, build connections, and grow with confidence.
           </p>
-          <p className="mt-4 text-[0.8rem] md:text-lg text-[#2D1B4E]">
+          <p className="mt-4 text-lg text-[#2D1B4E]">
             Partner with us to engage with emerging talent and make a meaningful impact.
           </p>
 

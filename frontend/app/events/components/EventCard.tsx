@@ -1,35 +1,45 @@
+/**
+ * EventCard Component
+ *
+ * Purpose:
+ * - Displays event information in a card format
+ * - Provides clickable navigation to event detail page
+ * - Formats date information from ISO date string
+ *
+ * Notes:
+ * - Automatically computes date parts (monthLabel, weekday, day) from event.date
+ * - Links to `/events/{id}` for event detail view
+ */
+
+"use client";
+
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
+import type { Event } from "@/app/events/types";
+import { getDateParts } from "@/app/events/utils";
 import "./EventCard.css";
 
-type EventCardProps = {
-  id: string; // id is needed for redirect to event-specfic page
-  monthLabel: string;
-  weekday: string;
-  day: string;
-  meta: string;
-  title: string;
-  description: string;
-  posterSrc?: string;
-  posterAlt?: string;
-  titleLink?: string;
-};
+type EventCardProps = Event;
 
 function EventCard({
   id,
-  monthLabel,
-  weekday,
-  day,
-  meta,
   title,
   description,
-  posterSrc,
-  posterAlt,
-  titleLink,
+  date,
+  location,
+  image_url,
+  signup_url,
 }: EventCardProps) {
-  void id;
+  const { monthLabel, weekday, day } = getDateParts(date);
+  const meta = location ? `${date} Location: ${location}` : date;
+  const posterSrc = image_url || "/globe.svg";
+
   return (
-    <div className="event-card">
+    <Link
+      href={`/events/${id}`}
+      className="event-card cursor-pointer hover:opacity-90 transition-opacity"
+    >
       {/* Top month header */}
       <div className="event-card__header">
         <span className="event-card__month-label">{monthLabel}</span>
@@ -48,20 +58,25 @@ function EventCard({
         <div className="event-card__content">
           <p className="event-card__meta">{meta}</p>
 
-          {titleLink ? (
-            <a
-              href={titleLink}
+          {signup_url ? (
+            <button
+              type="button"
               className="event-card__title event-card__title--link"
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open(signup_url, "_blank", "noopener,noreferrer");
+              }}
             >
               {title}
-            </a>
+            </button>
           ) : (
             <p className="event-card__title">{title}</p>
           )}
 
-          <p className="event-card__description">{description}</p>
+          <p className="event-card__description line-clamp-3">
+            {description || ""}
+          </p>
         </div>
 
         {/* Poster on the right (optional) */}
@@ -69,7 +84,7 @@ function EventCard({
           <div className="event-card__poster">
             <Image
               src={posterSrc}
-              alt={posterAlt || "Event poster"}
+              alt="Event poster"
               width={260}
               height={160}
               className="event-card__poster-image"
@@ -78,7 +93,7 @@ function EventCard({
           </div>
         )}
       </div>
-    </div>
+    </Link>
   );
 }
 

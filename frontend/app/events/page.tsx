@@ -2,9 +2,9 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ErrorState from "@/components/ErrorState";
-import EventSection from "./EventSection";
+import EventSection from "@/app/events/components/EventSection";
 import { useEffect, useState } from "react";
-import type { Event, EventsApiResponse } from "./types";
+import type { Event, EventsApiResponse } from "@/app/events/types";
 
 async function fetchEventBucket(endpoint: string): Promise<EventsApiResponse> {
   const response = await fetch(endpoint);

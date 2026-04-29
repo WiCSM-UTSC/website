@@ -1,141 +1,192 @@
-import Image from "next/image";
+/**
+ * Event Detail Page
+ *
+ * Purpose:
+ * - Displays detailed information for a specific event
+ * - Fetches event data from API based on URL parameter
+ * - Shows event description, venue map, and registration link
+ *
+ * Notes:
+ * - Route: /events/{id} where id is the event.id
+ * - Fetches data client-side via /api/events/:id
+ */
+
+"use client";
+
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ErrorState from "@/components/ErrorState";
+import EventImage from "@/app/events/components/EventImage";
+import type { Event } from "@/app/events/types";
+import { getDateParts } from "@/app/events/utils";
 
-type EventData = {
-  id: string;
-  monthLabel: string;
-  weekday: string;
-  day: string;
-  meta: string;
-  title: string;
-  description: string;
-  posterSrc?: string;
-  posterAlt?: string;
-  titleLink?: string;
+type EventResponse = {
+  event?: Event;
+  error?: string;
 };
 
-const EVENT_DATA: Record<string, EventData> = {
-  "amr-youth-policy": {
-    id: "amr-youth-policy",
-    monthLabel: "SEPTEMBER 2025",
-    weekday: "MON",
-    day: "25",
-    meta: "September 25 Location: IC Atrium @ 3:00 pm - 8:00 pm",
-    title: "Event title",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Odio sit congue euismod viverra magna.\n\nMi consequat mattis urna condimentum orci. Urna neque magna massa bibendum. Erat pharetra nulla euismod in fames tellus eu.",
-    posterSrc: undefined,
-    posterAlt: "Event poster",
-    titleLink: "#",
-  },
-};
+async function fetchEventById(eventId: string): Promise<Event> {
+  const response = await fetch(`/api/events/${eventId}`);
+  const data = (await response
+    .json()
+    .catch(() => null)) as EventResponse | null;
 
-const FALLBACK_EVENT: EventData = {
-  id: "fallback",
-  monthLabel: "SEPTEMBER 2025",
-  weekday: "MON",
-  day: "25",
-  meta: "September 25 Location: IC Atrium @ 3:00 pm - 8:00 pm",
-  title: "Event title",
-  description:
-    "Lorem ipsum dolor sit amet consectetur. Odio sit congue euismod viverra magna.\n\nMi consequat mattis urna condimentum orci. Urna neque magna massa bibendum. Erat pharetra nulla euismod in fames tellus eu.",
-  posterSrc: undefined,
-  posterAlt: "Event poster",
-  titleLink: "#",
-};
+  if (!response.ok || !data?.event) {
+    throw new Error(data?.error || "Failed to fetch event");
+  }
 
-function getLocation(meta: string) {
-  const match = meta.match(/Location:\s*(.*?)\s*@/i);
-  return match?.[1]?.trim() || "location";
+  return data.event;
 }
 
-function getDateTimeLabel(event: EventData) {
-  return `${event.weekday} ${event.day} - ${event.meta}`;
+function getLocation(location: string | null): string {
+  return location?.trim() || "University of Toronto Scarborough";
 }
 
-function EventImage({ src, alt }: { src?: string; alt: string }) {
-  if (src) {
+export default function EventDetailPage() {
+  const params = useParams();
+  const eventId = Array.isArray(params?.id) ? params?.id[0] : params?.id;
+  const [event, setEvent] = useState<Event | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  //use effect for client side loading event using id 
+  useEffect(() => {
+    if (!eventId) {
+      setError("Missing event id");
+      setLoading(false);
+      return;
+    }
+
+    let isMounted = true;
+
+    async function loadEvent() {
+      try {
+        const eventData = await fetchEventById(eventId);
+        if (isMounted) {
+          setEvent(eventData);
+          setError(null);
+        }
+      } catch (err) {
+        if (isMounted) {
+          setError(err instanceof Error ? err.message : "Failed to load event");
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    setLoading(true);
+    loadEvent();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [eventId]);
+
+  if (loading) {
     return (
-      <Image
-        src={src}
-        alt={alt}
-        width={482}
-        height={521}
-        className="h-full w-full rounded-[30px] object-cover"
-      />
+      <div className="min-h-screen bg-[linear-gradient(180deg,#F7F3FF_0%,#DECDFF_38%,#FFFFFF_79%)]">
+        <div className="mx-auto w-full max-w-[1240px] px-4 pb-12 pt-6 sm:px-6 md:pb-16 md:pt-8 lg:px-10 lg:pt-10">
+          <Navbar />
+          <main className="mt-14 md:mt-20">
+            <div className="flex items-center justify-center py-16 text-lg text-[#513C97]">
+              Loading event...
+            </div>
+          </main>
+        </div>
+        <Footer />
+      </div>
     );
   }
 
-  return (
-    <div
-      aria-label={alt}
-      className="h-full w-full rounded-[30px] border border-[#EFE8FF] bg-[conic-gradient(from_45deg,#F4F4F4_0deg,#F4F4F4_90deg,#EAEAEA_90deg,#EAEAEA_180deg,#F4F4F4_180deg,#F4F4F4_270deg,#EAEAEA_270deg,#EAEAEA_360deg)] bg-size-[28px_28px]"
-    />
-  );
-}
+  if (error || !event) {
+    return (
+      <div className="min-h-screen bg-[linear-gradient(180deg,#F7F3FF_0%,#DECDFF_38%,#FFFFFF_79%)]">
+        <div className="mx-auto w-full max-w-[1240px] px-4 pb-12 pt-6 sm:px-6 md:pb-16 md:pt-8 lg:px-10 lg:pt-10">
+          <Navbar />
+          <main className="mt-14 md:mt-20">
+            <ErrorState
+              message="Event not found"
+              subtitle="The event you're looking for doesn't exist or has been removed."
+            />
+            <div className="mt-8 text-center">
+              <Link
+                href="/events"
+                className="inline-flex h-[62px] rounded-[35px] bg-[#54528F] px-10 text-xl items-center  font-semibold text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:bg-[#4A4884]"
+              >
+                Back to Events
+              </Link>
+            </div>
+          </main>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
-export default async function EventDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const event = EVENT_DATA[id] ?? FALLBACK_EVENT;
-  const locationLabel = getLocation(event.meta);
-  const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(
-    locationLabel === "location"
-      ? "University of Toronto Scarborough"
-      : locationLabel,
-  )}&output=embed`;
+  const { monthLabel, weekday, day } = getDateParts(event.date);
+  const location = getLocation(event.location);
+  const dateTimeLabel = `${weekday} ${day} - ${monthLabel} @ ${event.start_time || "TBA"}`;
+  const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(location)}&output=embed`;
+  const posterSrc = event.image_url || undefined;
 
+  //successful path - event detail page 
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,#F7F3FF_0%,#DECDFF_38%,#FFFFFF_79%)]">
       <div className="mx-auto w-full max-w-[1240px] px-4 pb-12 pt-6 sm:px-6 md:pb-16 md:pt-8 lg:px-10 lg:pt-10">
         <Navbar />
 
         <main className="mt-14 md:mt-20">
+
+          {/* main title */}
           <section>
             <h1 className="text-[48px] font-bold leading-[0.95] tracking-[-0.72px] text-[#513C97] md:text-[64px]">
               {event.title}
             </h1>
             <p className="mt-2 text-xl font-semibold text-[#3F3F3F] md:text-2xl">
-              {getDateTimeLabel(event)}
+              {dateTimeLabel}
             </p>
           </section>
 
+          {/* event details - image, desc, location and registration */}
           <section className="mt-8 grid gap-10 md:mt-12 md:grid-cols-[482px_1fr] md:items-start md:gap-16">
             <div className="mx-auto h-[324px] w-full max-w-[300px] rounded-[30px] border-2 border-[rgba(98,12,242,0.25)] p-px shadow-[0_0_57px_0_#8DADED,0_0_33px_0_#EFD1FF,0_0_19px_0_#EFD1FF,0_0_9px_0_#EFD1FF,0_0_2.75px_0_#EFD1FF] md:mx-0 md:h-[521px] md:max-w-[482px]">
-              <EventImage
-                src={event.posterSrc}
-                alt={event.posterAlt || `${event.title} cover`}
-              />
+              <EventImage src={posterSrc} alt={`${event.title} cover`} />
             </div>
 
-            <div className="max-w-[560px]">
+            <div className="w-full md:max-w-[560px]">
               <h2 className="text-5xl font-bold leading-[0.95] tracking-[-0.72px] text-[#54528F] md:text-6xl">
                 Description
               </h2>
 
-              <p className="mt-6 whitespace-pre-line text-justify text-xl leading-normal text-[#3F3F3F] md:text-2xl">
-                {event.description}
+              <p className="mt-6 whitespace-pre-line text-justify text-sm leading-normal text-[#3F3F3F] md:text-[1rem]">
+                {event.description ||
+                  "No description available for this event."}
               </p>
 
               <div className="mt-8 flex items-center gap-4 md:mt-10 md:gap-6">
-                <MapPin className="h-7 w-7 text-[#54528F] md:h-10 md:w-10" />
-                <p className="text-xl font-semibold text-[#54528F] md:text-2xl">
-                  {locationLabel}
+                <MapPin className="h-8 w-8 shrink-0 text-[#54528F] md:h-10 md:w-10" />
+                <p className="text-base font-semibold text-[#54528F] md:text-2xl">
+                  {location}
                 </p>
               </div>
 
-              <Link
-                href={event.titleLink || "#"}
-                className="mt-8 inline-flex h-[62px] w-full max-w-[455px] items-center justify-center rounded-[35px] bg-[#54528F] px-10 text-2xl font-semibold text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:bg-[#4A4884]"
-              >
-                Register now!
-              </Link>
+              {event.signup_url && (
+                <Link
+                  href={event.signup_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 flex h-[62px] w-full items-center justify-center rounded-[35px] bg-[#54528F] px-10 text-xl font-semibold text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:bg-[#4A4884] md:text-2xl"
+                >
+                  Register now!
+                </Link>
+              )}
             </div>
           </section>
 
@@ -144,7 +195,7 @@ export default async function EventDetailPage({
               Venue
             </h2>
             <p className="mt-2 text-xl font-medium text-[#3F3F3F] md:text-2xl">
-              {locationLabel}
+              {location}
             </p>
 
             <div className="mt-6 mx-auto w-fit overflow-hidden md:mt-10 md:max-w-[861px] md:w-full">

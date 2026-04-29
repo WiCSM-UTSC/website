@@ -1,6 +1,6 @@
 import { useState } from "react";
-import type { Event } from "./types";
-import EventCard from "./EventCard";
+import type { Event } from "@/app/events/types";
+import EventCard from "@/app/events/components/EventCard";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import {
   AnimatePresence,
@@ -11,10 +11,9 @@ import {
 } from "framer-motion";
 import {
   EVENTS_PER_PAGE,
-  getDateParts,
   getPaginatedEvents,
   getTotalPages,
-} from "./utils";
+} from "@/app/events/utils";
 
 type EventSectionProps = {
   isCurrent: boolean;
@@ -38,6 +37,7 @@ export default function EventSection({
     EVENTS_PER_PAGE,
   );
 
+  //page animation and pagination effects 
   const pageAnimationVariants = {
     enter: (direction: number) => ({
       opacity: 0,
@@ -103,30 +103,9 @@ export default function EventSection({
                     ease: "easeOut",
                   }}
                 >
-                  {paginatedEvents.map((event) => {
-                    const { monthLabel, weekday, day } = getDateParts(
-                      event.date,
-                    );
-
-                    return (
-                      <EventCard
-                        key={event.id}
-                        id={event.id}
-                        monthLabel={monthLabel}
-                        weekday={weekday}
-                        day={day}
-                        meta={
-                          event.location
-                            ? `${event.date} Location: ${event.location}`
-                            : event.date
-                        }
-                        title={event.title}
-                        description={event.description || ""}
-                        posterSrc={event.image_url || "/globe.svg"}
-                        titleLink={event.signup_url || undefined}
-                      />
-                    );
-                  })}
+                  {paginatedEvents.map((event) => (
+                    <EventCard key={event.id} {...event} />
+                  ))}
                 </m.div>
               </AnimatePresence>
             </LazyMotion>

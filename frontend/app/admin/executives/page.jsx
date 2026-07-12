@@ -7,6 +7,7 @@ const mockExecutives = [
     {
         id: 1,
         name: "Name of the Exec",
+        team: "Team Name",
         role: "Role of the Exec",
         bio: "Bio of the Exec is shown here when clicked",
         imageUrl: null,
@@ -14,6 +15,7 @@ const mockExecutives = [
     {
         id: 2,
         name: "Name of the Exec",
+        team: "Team Name",
         role: "Role of the Exec",
         bio: "Bio of the Exec is shown here when clicked",
         imageUrl: null,
@@ -21,6 +23,7 @@ const mockExecutives = [
     {
         id: 3,
         name: "Name of the Exec",
+        team: "Team Name",
         role: "Role of the Exec",
         bio: "Bio of the Exec is shown here when clicked",
         imageUrl: null,
@@ -35,6 +38,7 @@ export default function ManageExecutivesPage() {
         const newExec = {
             id: Date.now(),
             name: "",
+            team: "",
             role: "",
             bio: "",
             imageUrl: null,

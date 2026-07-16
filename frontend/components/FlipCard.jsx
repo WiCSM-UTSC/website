@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import PersonPlaceholder from "./PersonPlaceholder";
 
 export default function FlipCard({ name, position, description, imageUrl }) {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -24,7 +23,9 @@ export default function FlipCard({ name, position, description, imageUrl }) {
     >
       <div
         className="w-83 [height:25rem] rounded-1xl"
-        style={{ perspective: "1000px" }}
+        style={{
+          perspective: "1000px",
+        }}
       >
         <div
           className="relative w-full h-full rounded-2xl"
@@ -41,27 +42,23 @@ export default function FlipCard({ name, position, description, imageUrl }) {
             }}
           >
             <div className="h-full w-full overflow-hidden rounded-2xl">
-              {imageUrl ? (
+              {imageUrl && (
                 <div className="absolute inset-0 flex flex-col items-center justify-start pt-8 px-6 pb-24">
                   <div className="relative w-full [height:28rem]">
                     <Image
                       src={imageUrl}
                       alt={name}
                       fill
-                      sizes="320px"
                       className="object-cover rounded-1xl [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.3))]"
                     />
                   </div>
                 </div>
-              ) : (
-                <PersonPlaceholder />
               )}
-
-              <div className="absolute bottom-6 left-0 right-0 text-center px-4">
-                <p className="text-xl font-black text-black [filter:drop-shadow(0_0_3px_rgba(230,220,250,0.9))] truncate">
+              <div className="absolute bottom-4 left-0 right-0 text-center">
+                <p className="text-3xl font-black text-black [filter:drop-shadow(0_0_3px_rgba(230,220,250,0.9))]">
                   {name}
                 </p>
-                <p className="text-xl font-black text-black [filter:drop-shadow(0_0_3px_rgba(230,220,250,0.9))] truncate">
+                <p className="text-3xl font-black text-black [filter:drop-shadow(0_0_3px_rgba(230,220,250,0.9))]">
                   {position}
                 </p>
               </div>

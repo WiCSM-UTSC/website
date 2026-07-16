@@ -1,32 +1,48 @@
+import {
+  getSupabaseCredentials,
+  hasMissingAnonCredentials,
+  requestSupabaseEdgeFunction,
+} from "../utils/supabase";
 
 export async function GET() {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const credentials = getSupabaseCredentials();
 
-    if (!supabaseUrl || !supabaseAnonKey) {
-        return Response.json(
-            {
-                error:
-                    "Server misconfiguration: NEXT_PUBLIC_SUPABASE_URL and/or " +
-                    "NEXT_PUBLIC_SUPABASE_ANON_KEY are not set.",
-            },
-            { status: 500 }
-        );
-    }
+  if (hasMissingAnonCredentials(credentials)) {
+    return Response.json(
+      {
+        error:
+          "Server misconfiguration: SUPABASE_URL and/or SUPABASE_ANON_KEY are not set.",
+      },
+      { status: 500 },
+    );
+  }
 
-    const res = await fetch(`${supabaseUrl}/functions/v1/exec`, {
-        headers: {
-            Authorization: `Bearer ${supabaseAnonKey}`,
+  try {
+    const { response, body } = await requestSupabaseEdgeFunction(
+      credentials.url,
+      "exec",
+      credentials.anonKey,
+    );
+
+    if (!response.ok) {
+      return Response.json(
+        {
+          error:
+            body?.error ||
+            body?.message ||
+            `Upstream error from Supabase: ${response.status} ${response.statusText}`,
         },
-    });
-
-    if (!res.ok) {
-        return Response.json(
-            { error: `Upstream error from Supabase: ${res.status} ${res.statusText}` },
-            { status: res.status }
-        );
+        { status: response.status },
+      );
     }
 
-    const data = await res.json();
-    return Response.json(data);
+    return Response.json(body);
+  } catch (error) {
+    console.error("Failed to fetch executive data:", error);
+
+    return Response.json(
+      { error: "Unable to retrieve executive data." },
+      { status: 500 },
+    );
+  }
 }

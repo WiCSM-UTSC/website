@@ -1,13 +1,19 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import { AboutSection } from "../components/about-section";
+import { HomeSection } from "../components/home-section";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "WiCSM UTSC" },
+    { name: "description", content: "Women in Computer Science and Mathematics at UTSC" },
   ];
 }
 
 export default function Home() {
-  return <Welcome />;
+  return (
+    <main>
+      <HomeSection />
+      <AboutSection />
+    </main>
+  );
 }

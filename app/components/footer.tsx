@@ -10,10 +10,10 @@ interface FooterProps {
 }
 
 const defaultSocialLinks: readonly FooterLink[] = [
-  { href: "#", icon: "/instagram.svg", label: "Instagram" },
-  { href: "#", icon: "/linkedin.svg", label: "LinkedIn" },
-  { href: "#", icon: "/discord.svg", label: "Discord" },
-  { href: "#", icon: "/email.svg", label: "Email" },
+  { href: "https://www.instagram.com/wicsm.utsc/", icon: "/instagram.svg", label: "Instagram" },
+  { href: "https://www.linkedin.com/company/wicsm-utsc/", icon: "/linkedin.svg", label: "LinkedIn" },
+  { href: "https://discord.gg/XYQHrNZqn4", icon: "/discord.svg", label: "Discord" },
+  { href: "mailto:wicsm.utsc@gmail.com", icon: "/email.svg", label: "Email" },
 ];
 
 export function Footer({ socialLinks = defaultSocialLinks }: FooterProps) {

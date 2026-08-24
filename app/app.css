@@ -9,6 +9,10 @@
   --color-brand-secondary: #f7f3fb;
   --color-brand-secondary-hover: #eee8f5;
   --color-brand-secondary-active: #e5dcf0;
+  --text-footer-logo: 74px;
+  --text-footer-logo-mobile: 56px;
+  --text-footer-tagline: 10px;
+  --text-footer-tagline-mobile: 8px;
 }
 
 @layer base {

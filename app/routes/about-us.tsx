@@ -60,8 +60,8 @@ export default function AboutUs({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <main className="min-h-589.75 bg-[linear-gradient(180deg,#f7f3fb_15.385%,#b1b0f2_48.558%,#f9f6ff_83.173%,#fff_100%)] px-[clamp(16px,8vw,108px)] pt-[clamp(20px,5vw,44px)] pb-32 text-[#513c97]">
+        <Navbar />
         <div className="mx-auto max-w-248.25">
-          <Navbar />
           <section
             className="pt-18 text-center"
             aria-labelledby="about-wicsm-heading"

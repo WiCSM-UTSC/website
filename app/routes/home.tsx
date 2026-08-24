@@ -1,5 +1,6 @@
 import type { Route } from "./+types/home";
 import { AboutSection } from "../components/about-section";
+import { Footer } from "../components/footer";
 import { HomeSection } from "../components/home-section";
 
 export function meta({}: Route.MetaArgs) {
@@ -11,9 +12,12 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   return (
-    <main>
-      <HomeSection />
-      <AboutSection />
-    </main>
+    <>
+      <main>
+        <HomeSection />
+        <AboutSection />
+      </main>
+      <Footer />
+    </>
   );
 }

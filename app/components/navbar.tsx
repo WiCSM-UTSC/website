@@ -13,12 +13,16 @@ interface NavbarProps {
 
 const defaultLinks: readonly NavbarLink[] = [
   { href: "/", label: "HOME" },
-  { href: "#about-us", label: "ABOUT US" },
+  { href: "/about-us", label: "ABOUT US" },
   { href: "#events", label: "EVENTS" },
   { href: "#contact", label: "CONTACT" },
 ];
 
-export function Navbar({ links = defaultLinks, loginHref = "/login", loginLabel = "login" }: NavbarProps) {
+export function Navbar({
+  links = defaultLinks,
+  loginHref = "/login",
+  loginLabel = "login",
+}: NavbarProps) {
   return (
     <nav
       aria-label="Main navigation"
@@ -30,7 +34,13 @@ export function Navbar({ links = defaultLinks, loginHref = "/login", loginLabel 
           className="flex h-12 w-14.5 items-center justify-center rounded-[10px] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-brand-text"
           href="/"
         >
-          <img className="block h-12 w-14.5 object-contain" alt="" height="48" src="/favicon.svg" width="58" />
+          <img
+            className="block h-12 w-14.5 object-contain"
+            alt=""
+            height="48"
+            src="/favicon.svg"
+            width="58"
+          />
         </a>
         <div className="flex items-center gap-[clamp(24px,4vw,64px)] max-[760px]:hidden">
           {links.map((item) => (

@@ -28,7 +28,7 @@ export function Footer({ socialLinks = defaultSocialLinks }: FooterProps) {
     <footer className="min-h-104 bg-[linear-gradient(180deg,rgba(249,246,255,0.2)_0%,#9bceee_44.37%,#a9a7eb_80.91%)] px-[clamp(28px,3.5vw,45px)] pt-[clamp(64px,11.5vw,149px)] pb-6 text-white">
       <div className="mx-auto max-w-296">
         <div className="flex items-center justify-between gap-16 max-[760px]:flex-col max-[760px]:items-start max-[760px]:gap-10">
-          <div className="relative h-31 w-92.75 text-brand-button max-[480px]:h-23.25 max-[480px]:w-69.5">
+          <div className="relative h-31 w-92.75 text-brand-button drop-shadow-xl max-[480px]:h-23.25 max-[480px]:w-69.5">
             <img
               alt=""
               className="pointer-events-none absolute -top-4.5 -left-10.75 h-39.25 w-47.5 object-contain max-[480px]:-top-1 max-[480px]:-left-6 max-[480px]:h-26.5 max-[480px]:w-32"

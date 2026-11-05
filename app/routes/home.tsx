@@ -16,8 +16,8 @@ export default function Home() {
     <>
       <main>
         <HomeSection />
-        <ValuesSection />
         <AboutSection />
+        <ValuesSection />
       </main>
       <Footer />
     </>

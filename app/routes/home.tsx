@@ -2,6 +2,7 @@ import type { Route } from "./+types/home";
 import { AboutSection } from "../components/about-section";
 import { Footer } from "../components/footer";
 import { HomeSection } from "../components/home-section";
+import { ValuesSection } from "../components/values-section";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -16,6 +17,7 @@ export default function Home() {
       <main>
         <HomeSection />
         <AboutSection />
+        <ValuesSection />
       </main>
       <Footer />
     </>

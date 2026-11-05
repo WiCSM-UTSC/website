@@ -4,7 +4,7 @@ export function HomeSection() {
   return (
     <section
       aria-label="WiCSM"
-      className="relative flex min-h-screen items-center bg-[linear-gradient(180deg,#9895F2_0%,#9895F2_90%,#FFFFFF_100%)] p-[clamp(32px,8vw,108px)]"
+      className="relative flex min-h-screen items-center bg-[linear-gradient(180deg,#9895F2_0%,#9895F2_58%,#d0c9f0_78%,#faf8ff_100%)] p-[clamp(32px,8vw,108px)]"
     >
       <div className="absolute top-[clamp(20px,5vw,44px)] right-[clamp(16px,8vw,108px)] left-[clamp(16px,8vw,108px)]">
         <Navbar />
